@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "alwaysStrict": true,
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "rootDir": "src",
+        "outDir": "dist/js",
+        "sourceMap": true,
+        "jsx": "react",
+        "strict": true,
+        "lib": [
+            "dom",
+            "esnext"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "src/*": [
+                "src/*"
+            ]
+        },
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "**/*.ts",
+        "**/*.tsx"
+    ]
+}
