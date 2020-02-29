@@ -4,16 +4,17 @@ import styledSystem, { StyledSystemProps } from 'src/utils/styledSystem'
 import { DialogProps } from '@material-ui/core/Dialog/Dialog'
 import styled from 'styled-components'
 
-type Props = DialogProps &
-  StyledSystemProps & {
-    fullHeight?: boolean
-  }
+type Props = DialogProps & StyledSystemProps & StyledProps
 
-const Dialog: React.FC<Props> = props => {
-  return <StyledDialog {...props} />
+type StyledProps = {
+  fullHeight?: boolean
 }
 
-const StyledDialog = styledSystem(styled<any>(MaterialUIDialog)`
+const WrappedDialog: React.FC<Props> = ({ fullHeight, ...props }) => (
+  <MaterialUIDialog {...props} />
+)
+
+const Dialog = styledSystem(styled<any>(WrappedDialog)`
   .MuiPaper-root {
     min-height: ${props => (props.fullHeight ? 'calc(100vh - 64px)' : '100%')};
   }
