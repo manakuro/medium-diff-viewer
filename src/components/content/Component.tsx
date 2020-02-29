@@ -5,6 +5,16 @@ import DialogActions from 'src/components/UI/DialogActions'
 import DialogTitle from 'src/components/UI/DialogTitle'
 import Button from 'src/components/UI/Button'
 import Grid from 'src/components/UI/Grid'
+import TimeLine from 'src/components/UI/Timeline'
+import TimeLineItem from 'src/components/UI/TimelineItem'
+import TimeLineItemDivider from 'src/components/UI/TimelineItemDivider'
+import TimeLineItemDot from 'src/components/UI/TimelineItemDot'
+import TimeLineItemBody from 'src/components/UI/TimelineItemBody'
+import Link from 'src/components/UI/Link'
+import TimeLineItemDate from 'src/components/UI/TimelineItemDate'
+import styledSystem from 'src/utils/styledSystem'
+import styled from 'styled-components'
+import theme from 'src/styles/theme'
 
 type Props = {
   active: boolean
@@ -38,13 +48,31 @@ const Component: React.FC<Props> = props => {
       <DialogContent dividers>
         <Grid container>
           <Grid item xs={2}>
-            hi
+            <Title>Diff History</Title>
+            <TimeLine>
+              {[...new Array(5)].map((i, index) => {
+                const active = index === 0
+
+                return (
+                  <TimeLineItem key={index} mb={24}>
+                    <TimeLineItemDivider>
+                      <TimeLineItemDot width={12} height={12} active={active} />
+                    </TimeLineItemDivider>
+                    <TimeLineItemBody>
+                      <TimeLineItemDate active={active}>
+                        <Link noLink>2020/02/01 20:00:20</Link>
+                      </TimeLineItemDate>
+                    </TimeLineItemBody>
+                  </TimeLineItem>
+                )
+              })}
+            </TimeLine>
           </Grid>
           <Grid item xs={5}>
-            prev diff
+            <Title>2020/02/01 20:00:20</Title>
           </Grid>
           <Grid item xs={5}>
-            current diff
+            <Title>Current</Title>
           </Grid>
         </Grid>
       </DialogContent>
@@ -57,5 +85,11 @@ const Component: React.FC<Props> = props => {
     </Dialog>
   )
 }
+
+const Title = styledSystem(styled.h3`
+  font-size: 1rem;
+  font-weight: ${theme.fontWeights.heading};
+  margin-bottom: 24px;
+`)
 
 export default Component

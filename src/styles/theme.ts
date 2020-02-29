@@ -15,7 +15,7 @@ const theme = {
   main: {
     width: '1120px',
     font: 'Roboto',
-    headingFont: 'Oswald',
+    headingFont: 'Roboto',
     background: backgroundColour,
     colour: textColour,
     subColour: textSubColour,
