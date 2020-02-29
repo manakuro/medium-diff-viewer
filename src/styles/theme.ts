@@ -26,7 +26,7 @@ const theme = {
   space: [],
 
   colors: {
-    primary: primaryColour,
+    primary: `${primaryColour} !important`,
     secondary: '',
     text: {
       primary: textColour,

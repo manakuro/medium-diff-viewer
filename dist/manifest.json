@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
 
-    "name": "英文解釈SVO",
-    "description": "英文をSVOに分類します。",
+    "name": "Medium Diff Viewer",
+    "description": "Diff viewer for Medium",
     "version": "1.0.0",
 
     "browser_action": {
