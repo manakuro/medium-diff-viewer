@@ -18,38 +18,23 @@ import theme from 'src/styles/theme'
 import replaceLineBreaksWith from 'src/utils/replaceLineBreaksWith'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
 import parse from 'html-react-parser'
-import { ContainerTypes } from 'src/components/content/Container'
+import { ContainerTypes, Diff } from 'src/components/content/Container'
 import { Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
 
 type Props = {
   active: boolean
   content: string
   setCurrentContent: ContainerTypes['setCurrentContent']
+  diffs: Diff[]
 }
 
 const DEFAULT_MAX_WIDTH = 'xl' as const
 const DEFAULT_SCROLL = 'paper' as const
 
-const oldCode = `
-<h1>Creating a UI Component with Atomic Design, React and Styled-Component</h1>
-<p>Talk about how to create a UI component using React and Styled-Component based on my experience.</p>
-<figure><div><div></div><div><img src="https://cdn-images-1.medium.com/freeze/max/60/1*5CgUEprTdEn3UWvDZPdSEQ.png?q=20"><canvas></canvas><img><noscript><img class="progressiveMedia-noscript js-progressiveMedia-inner" src="https://cdn-images-1.medium.com/max/1600/1*5CgUEprTdEn3UWvDZPdSEQ.png"></noscript></div></div></figure>
-<p>I recently had an opportunity with building a website from scratch and introduced Component-based UI Development using Atomic Design, React and&nbsp;</p>
-<h4>Front-end Development Issues</h4>
-<p>I’d <strong>been</strong> struggling with front-end issues at some project for a while such as UI components bug, CSS spaghetti code and so on.</p>
-<p>It occurred because each designer has their own style and tone and each developer creates their own UI components without noticing it has been developed already. And so what will happen?</p>
-<ul><li>Inconsistent style</li><li>A lot of duplicated UI components</li><li>A lot of unnecessary time to design and develop</li></ul>
-<p>Our goal to solve the issues is <strong>keeping UI components consistent</strong> even if multiple designers and developers involved in the project. Designers need to know how to design and share it with each other. Developers need to make reusable components across the product. Creating a consistent UI component across every part of the project helps our users navigate and interact with our website without confusion. Users will learn faster about how to use our design.</p>
-<p><br></p>
-<h3>Test</h3>
-<p>Consistency has four types according to <a>Design principle: Consistency</a> at UX Collective article. We focus on <strong>visual consistency</strong> and <strong>functional consistency </strong>to improve the usability and learnability of the product.</p>
-<blockquote>But how to deal with that?</blockquote>
-<p>test</p>
-`
-
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
+  const [oldDiff, setOldDiff] = useState(props.diffs[0])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -59,6 +44,13 @@ const Component: React.FC<Props> = props => {
     setCurrentContent()
     setOpen(true)
   }, [setCurrentContent])
+
+  const handleClickViewHistory = useCallback(
+    (index: number) => {
+      setOldDiff(props.diffs[index])
+    },
+    [props.diffs],
+  )
 
   return (
     <>
@@ -94,8 +86,8 @@ const Component: React.FC<Props> = props => {
                 <Title>Diff History</Title>
                 <DiffHistoryWrapper>
                   <TimeLine>
-                    {[...new Array(45)].map((i, index) => {
-                      const active = index === 0
+                    {props.diffs.map((d, index) => {
+                      const active = d.date === oldDiff.date
 
                       return (
                         <TimeLineItem key={index} mb={24}>
@@ -108,7 +100,12 @@ const Component: React.FC<Props> = props => {
                           </TimeLineItemDivider>
                           <TimeLineItemBody>
                             <TimeLineItemDate active={active}>
-                              <Link noLink>2020/02/01 20:00:20</Link>
+                              <Link
+                                noLink
+                                onClick={() => handleClickViewHistory(index)}
+                              >
+                                {d.date}
+                              </Link>
                             </TimeLineItemDate>
                           </TimeLineItemBody>
                         </TimeLineItem>
@@ -122,12 +119,12 @@ const Component: React.FC<Props> = props => {
               <Title>Diff</Title>
               <DiffContainer className="postArticle-content">
                 <ReactDiffViewer
-                  oldValue={oldCode}
+                  oldValue={oldDiff.content}
                   newValue={props.content}
                   splitView
                   showDiffOnly={false}
                   compareMethod={DiffMethod.SENTENCES}
-                  leftTitle={'2020/03/05 20:12'}
+                  leftTitle={oldDiff.date}
                   rightTitle="Current"
                   renderContent={(str): any => {
                     if (!str) {

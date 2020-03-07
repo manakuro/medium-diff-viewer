@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import Content from 'src/components/content/Container'
 import { ThemeProvider } from 'styled-components'
@@ -9,11 +9,21 @@ import { DOCUMENT_APP_ID } from 'src/const'
 type Props = {}
 
 const App: React.FC<Props> = () => {
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      setActive(message.active)
+    })
+  }, [])
+
+  if (!active) return null
+
   return (
     <ThemeProvider theme={theme}>
       <>
         <GlobalStyle />
-        <Content />
+        <Content active={active} />
       </>
     </ThemeProvider>
   )

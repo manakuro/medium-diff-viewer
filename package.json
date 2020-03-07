@@ -14,6 +14,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/chrome": "0.0.92",
+    "@types/date-fns": "^2.6.0",
     "@types/lodash": "^4.14.149",
     "@types/react": "^16.0.40",
     "@types/react-dom": "^16.0.4",
@@ -56,7 +57,9 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.9.0",
+    "@rehooks/local-storage": "^2.2.3",
     "chrome-extension-async": "^3.4.1",
+    "date-fns": "^2.10.0",
     "html-react-parser": "^0.10.1",
     "lodash": "^4.17.15",
     "re-resizable": "^6.1.1",
