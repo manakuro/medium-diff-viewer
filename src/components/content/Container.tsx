@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import ContentComponent from 'src/components/content/Component'
 import getContent from 'src/utils/getContent'
 
@@ -6,6 +6,10 @@ type Props = {}
 
 type State = {
   content: string
+}
+
+export type ContainerTypes = {
+  setCurrentContent: () => void
 }
 
 const Container: React.FC<Props> = () => {
@@ -18,13 +22,19 @@ const Container: React.FC<Props> = () => {
     })
   }, [])
 
-  useEffect(() => {
+  const setCurrentContent = useCallback(() => {
     setContent(getContent())
   }, [])
 
   if (!active) return null
 
-  return <ContentComponent active={active} content={content} />
+  return (
+    <ContentComponent
+      active={active}
+      content={content}
+      setCurrentContent={setCurrentContent}
+    />
+  )
 }
 
 export default Container

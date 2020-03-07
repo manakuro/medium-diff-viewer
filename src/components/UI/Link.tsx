@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import pick from 'lodash/pick'
 import { hover } from 'src/styles/variables'
 import styledSystem, { StyledSystemProps } from 'src/utils/styledSystem'
 
@@ -29,25 +28,7 @@ type AnchorLinkProps = React.DetailedHTMLProps<
   HTMLAnchorElement
 >
 
-const ANCHOR_LINK_PROPS = [
-  'download',
-  'href',
-  'hrefLang',
-  'media',
-  'ping',
-  'rel',
-  'target',
-  'type',
-  'referrerPolicy',
-  'ref',
-] as const
-
 const Link: React.FC<Props> = props => {
-  const anchorLinkProps: AnchorLinkProps = pick(
-    props as AnchorLinkProps,
-    ANCHOR_LINK_PROPS,
-  )
-
   if (props.noLink) {
     return (
       <Span className={props.className} onClick={props.onClick}>
@@ -58,7 +39,7 @@ const Link: React.FC<Props> = props => {
 
   return (
     <AnchorLink
-      {...anchorLinkProps}
+      {...props}
       className={props.className}
       textDecoration={props.textDecoration}
       onClick={props.onClick}
@@ -73,6 +54,7 @@ const AnchorLink = styledSystem(styled.a<any>`
   text-decoration: ${props =>
     props.textDecoration ? props.textDecoration : 'none'};
   color: inherit;
+  cursor: pointer;
 
   ${hover}
 `)

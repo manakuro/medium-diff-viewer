@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Dialog from 'src/components/UI/Dialog'
 import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
@@ -18,10 +18,13 @@ import theme from 'src/styles/theme'
 import replaceLineBreaksWith from 'src/utils/replaceLineBreaksWith'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
 import parse from 'html-react-parser'
+import { ContainerTypes } from 'src/components/content/Container'
+import { Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
 
 type Props = {
   active: boolean
   content: string
+  setCurrentContent: ContainerTypes['setCurrentContent']
 }
 
 const DEFAULT_MAX_WIDTH = 'xl' as const
@@ -45,91 +48,107 @@ const oldCode = `
 `
 
 const Component: React.FC<Props> = props => {
-  const [open, setOpen] = useState(props.active)
-
-  useEffect(() => {
-    setOpen(props.active)
-  }, [props.active])
+  const { setCurrentContent } = props
+  const [open, setOpen] = useState(false)
 
   const handleClose = useCallback(() => {
     setOpen(false)
   }, [])
 
+  const handleViewDiff = useCallback(() => {
+    setCurrentContent()
+    setOpen(true)
+  }, [setCurrentContent])
+
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      fullWidth
-      fullHeight
-      maxWidth={DEFAULT_MAX_WIDTH}
-      scroll={DEFAULT_SCROLL}
-      fullScreen
-      aria-labelledby="dialog-title"
-    >
-      <DialogTitle id="dialog-title" fontSize="1rem">
-        Creating a UI Component with Atomic Design, React and Styled-Component
-      </DialogTitle>
-      <DialogContent dividers>
-        <Grid container>
-          <Grid item xs={2}>
-            <Sticky>
-              <Title>Diff History</Title>
-              <DiffHistoryWrapper>
-                <TimeLine>
-                  {[...new Array(45)].map((i, index) => {
-                    const active = index === 0
+    <>
+      <Link
+        position="fixed"
+        top={23}
+        right={30}
+        textDecoration="underline"
+        fontSize="md"
+        zIndex={Z_INDEX_LINK}
+        onClick={handleViewDiff}
+      >
+        View diff
+      </Link>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        fullHeight
+        maxWidth={DEFAULT_MAX_WIDTH}
+        scroll={DEFAULT_SCROLL}
+        fullScreen
+        aria-labelledby="dialog-title"
+        zIndex={Z_INDEX_CONTENT}
+      >
+        <DialogTitle id="dialog-title" fontSize="1rem">
+          Creating a UI Component with Atomic Design, React and Styled-Component
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid container>
+            <Grid item xs={2}>
+              <Sticky>
+                <Title>Diff History</Title>
+                <DiffHistoryWrapper>
+                  <TimeLine>
+                    {[...new Array(45)].map((i, index) => {
+                      const active = index === 0
 
-                    return (
-                      <TimeLineItem key={index} mb={24}>
-                        <TimeLineItemDivider>
-                          <TimeLineItemDot
-                            width={12}
-                            height={12}
-                            active={active}
-                          />
-                        </TimeLineItemDivider>
-                        <TimeLineItemBody>
-                          <TimeLineItemDate active={active}>
-                            <Link noLink>2020/02/01 20:00:20</Link>
-                          </TimeLineItemDate>
-                        </TimeLineItemBody>
-                      </TimeLineItem>
-                    )
-                  })}
-                </TimeLine>
-              </DiffHistoryWrapper>
-            </Sticky>
+                      return (
+                        <TimeLineItem key={index} mb={24}>
+                          <TimeLineItemDivider>
+                            <TimeLineItemDot
+                              width={12}
+                              height={12}
+                              active={active}
+                            />
+                          </TimeLineItemDivider>
+                          <TimeLineItemBody>
+                            <TimeLineItemDate active={active}>
+                              <Link noLink>2020/02/01 20:00:20</Link>
+                            </TimeLineItemDate>
+                          </TimeLineItemBody>
+                        </TimeLineItem>
+                      )
+                    })}
+                  </TimeLine>
+                </DiffHistoryWrapper>
+              </Sticky>
+            </Grid>
+            <Grid item xs={10}>
+              <Title>Diff</Title>
+              <DiffContainer className="postArticle-content">
+                <ReactDiffViewer
+                  oldValue={oldCode}
+                  newValue={props.content}
+                  splitView
+                  showDiffOnly={false}
+                  compareMethod={DiffMethod.SENTENCES}
+                  leftTitle={'2020/03/05 20:12'}
+                  rightTitle="Current"
+                  renderContent={(str): any => {
+                    if (!str) {
+                      return parse('<pre></pre>')
+                    }
+
+                    return parse(replaceLineBreaksWith(str, '<br />'))
+                  }}
+                />
+              </DiffContainer>
+            </Grid>
           </Grid>
-          <Grid item xs={10}>
-            <Title>Diff</Title>
-            <DiffContainer className="postArticle-content">
-              <ReactDiffViewer
-                oldValue={oldCode}
-                newValue={props.content}
-                splitView
-                showDiffOnly={false}
-                compareMethod={DiffMethod.SENTENCES}
-                leftTitle={'2020/03/05 20:12'}
-                rightTitle="Current"
-                renderContent={(str): any => {
-                  if (!str) {
-                    return parse('<pre></pre>')
-                  }
+        </DialogContent>
 
-                  return parse(replaceLineBreaksWith(str, '<br />'))
-                }}
-              />
-            </DiffContainer>
-          </Grid>
-        </Grid>
-      </DialogContent>
-
-      <DialogActions>
-        <Button onClick={handleClose} color="primary" fontSize="1rem">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" fontSize="1rem">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }
 

@@ -18,7 +18,8 @@ export const tableRowHoverColour = lightBlue
 export const transitionDuration = '0.25s' as const
 
 // Z-index
-export const Z_INDEX_CONTENT = 9999999999999
+export const Z_INDEX_LINK = 100000000
+export const Z_INDEX_CONTENT = '1000000001 !important'
 
 // effect
 export const hover = css`
