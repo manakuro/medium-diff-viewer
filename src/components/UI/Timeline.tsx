@@ -23,6 +23,7 @@ const Container = styledSystem(styled.div<Props>`
   flex-direction: column;
   width: 100%;
   position: relative;
+  left: 10px;
 
   &::before {
     position: absolute;

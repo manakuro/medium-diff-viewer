@@ -63,6 +63,7 @@ const Component: React.FC<Props> = props => {
       fullHeight
       maxWidth={DEFAULT_MAX_WIDTH}
       scroll={DEFAULT_SCROLL}
+      fullScreen
       aria-labelledby="dialog-title"
     >
       <DialogTitle id="dialog-title" fontSize="1rem">
@@ -71,25 +72,33 @@ const Component: React.FC<Props> = props => {
       <DialogContent dividers>
         <Grid container>
           <Grid item xs={2}>
-            <Title>Diff History</Title>
-            <TimeLine>
-              {[...new Array(5)].map((i, index) => {
-                const active = index === 0
+            <Sticky>
+              <Title>Diff History</Title>
+              <DiffHistoryWrapper>
+                <TimeLine>
+                  {[...new Array(45)].map((i, index) => {
+                    const active = index === 0
 
-                return (
-                  <TimeLineItem key={index} mb={24}>
-                    <TimeLineItemDivider>
-                      <TimeLineItemDot width={12} height={12} active={active} />
-                    </TimeLineItemDivider>
-                    <TimeLineItemBody>
-                      <TimeLineItemDate active={active}>
-                        <Link noLink>2020/02/01 20:00:20</Link>
-                      </TimeLineItemDate>
-                    </TimeLineItemBody>
-                  </TimeLineItem>
-                )
-              })}
-            </TimeLine>
+                    return (
+                      <TimeLineItem key={index} mb={24}>
+                        <TimeLineItemDivider>
+                          <TimeLineItemDot
+                            width={12}
+                            height={12}
+                            active={active}
+                          />
+                        </TimeLineItemDivider>
+                        <TimeLineItemBody>
+                          <TimeLineItemDate active={active}>
+                            <Link noLink>2020/02/01 20:00:20</Link>
+                          </TimeLineItemDate>
+                        </TimeLineItemBody>
+                      </TimeLineItem>
+                    )
+                  })}
+                </TimeLine>
+              </DiffHistoryWrapper>
+            </Sticky>
           </Grid>
           <Grid item xs={10}>
             <Title>Diff</Title>
@@ -129,6 +138,17 @@ const Title = styledSystem(styled.h3`
   font-weight: ${theme.fontWeights.heading};
   margin-bottom: 24px;
 `)
+
+const Sticky = styled.div`
+  position: sticky;
+  top: 0;
+`
+
+const DiffHistoryWrapper = styled.div`
+  width: 100%;
+  height: 600px;
+  overflow-y: scroll;
+`
 
 const resetCss = css`
   blockquote,
@@ -303,6 +323,11 @@ const DiffContainer = styledSystem(styled.div`
     box-sizing: border-box;
     user-select: auto;
     z-index: 100;
+  }
+
+  // diff viewer style
+  td {
+    min-width: 30px !important;
   }
 `)
 
