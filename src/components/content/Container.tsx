@@ -53,9 +53,7 @@ const Container: React.FC<Props> = props => {
         })
       }
     })()
-
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, [])
+  }, [add, getAllByIndex])
 
   diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
 
