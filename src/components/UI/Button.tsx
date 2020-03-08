@@ -6,9 +6,13 @@ import styled from 'styled-components'
 
 type Props = ButtonProps & StyledSystemProps
 
-const Wrapped: React.FC<Props> = ({ zIndex, borderColor, ...props }) => (
-  <MaterialUIButton {...props} />
-)
+const Wrapped: React.FC<Props> = ({
+  zIndex,
+  borderColor,
+  backgroundColor,
+  color,
+  ...props
+}) => <MaterialUIButton {...props} />
 
 const Button = styledSystem(styled(Wrapped)`
   text-transform: none !important;

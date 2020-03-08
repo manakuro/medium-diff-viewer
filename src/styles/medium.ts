@@ -174,4 +174,15 @@ export const mediumStyle = css`
     user-select: auto;
     z-index: 100;
   }
+
+  td {
+    pre {
+      pre {
+        margin-top: 43px;
+        background: rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        white-space: pre-wrap;
+      }
+    }
+  }
 `

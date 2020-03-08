@@ -35,11 +35,11 @@ const theme = {
       hint: '',
     },
 
-    lightGrey,
-    grey,
-    white,
-    black,
-    lightBlue,
+    lightGrey: `${lightGrey} !important`,
+    grey: `${grey} !important`,
+    white: `${white} !important`,
+    black: `${black} !important`,
+    lightBlue: `${lightBlue} !important`,
   },
 
   // Breakpoints based on Material Design

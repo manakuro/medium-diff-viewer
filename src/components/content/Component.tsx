@@ -66,8 +66,9 @@ const Component: React.FC<Props> = props => {
   return (
     <>
       <Button
-        color="primary"
+        color="white"
         borderColor="primary"
+        backgroundColor="primary"
         fontSize="xs"
         position={'fixed !important' as any}
         top={20}
@@ -137,7 +138,7 @@ const Component: React.FC<Props> = props => {
             </Grid>
             <Grid item xs={10}>
               <Title>Diff</Title>
-              <DiffContainer className="postArticle-content">
+              <DiffContainer>
                 <ReactDiffViewer
                   oldValue={oldDiff.content}
                   newValue={props.content}
@@ -157,10 +158,11 @@ const Component: React.FC<Props> = props => {
         <DialogActions>
           <Button
             onClick={handleClose}
-            color="primary"
+            color="white"
             borderColor="primary"
+            backgroundColor="primary"
             fontSize="sm"
-            variant="outlined"
+            variant="contained"
           >
             Close
           </Button>
@@ -189,6 +191,12 @@ const DiffHistoryWrapper = styled.div`
 
 const DiffContainer = styledSystem(styled.div`
   ${mediumStyle}
+
+  tr {
+    td:nth-of-type(3) {
+      padding-right: 20px;
+    }
+  }
 `)
 
 export default memo<Props>(Component)

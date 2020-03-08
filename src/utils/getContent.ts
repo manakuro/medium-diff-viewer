@@ -1,4 +1,5 @@
 import removeAttrs from 'src/utils/removeAttrs'
+import normalizeHtmlWhiteSpace from 'src/utils/normalizeHtmlWhiteSpace'
 
 const getContent = () => {
   const title = document.querySelector('h3')
@@ -14,9 +15,11 @@ const getContent = () => {
     removeAttrs(node)
   })
 
-  return Array.from(nodes).reduce((acc, node) => {
+  const content = Array.from(nodes).reduce((acc, node) => {
     return `${acc}\n${node.outerHTML}`
   }, '')
+
+  return normalizeHtmlWhiteSpace(content)
 }
 
 export default getContent
