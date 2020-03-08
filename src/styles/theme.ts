@@ -54,17 +54,17 @@ const theme = {
   },
 
   fontSizes: {
-    xs: '12px',
-    sm: '14px',
-    md: '16px',
-    lg: '20px',
-    xl: '24px',
+    xs: '12px !important',
+    sm: '14px !important',
+    md: '16px !important',
+    lg: '20px !important',
+    xl: '24px !important',
 
-    h5: '12px',
-    h4: '18px',
-    h3: '20px',
-    h2: '24px',
-    h1: '30px',
+    h5: '12px !important',
+    h4: '18px !important',
+    h3: '20px !important',
+    h2: '24px !important',
+    h1: '30px !important',
   },
 
   fontWeights: {
