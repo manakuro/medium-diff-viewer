@@ -32,6 +32,9 @@ type Props = {
 
 const DEFAULT_MAX_WIDTH = 'xl' as const
 const DEFAULT_SCROLL = 'paper' as const
+const DIFF_CONTAINER_STYLE = {
+  contentText: { fontSize: 16 },
+}
 const NOW = new Date()
 
 const Component: React.FC<Props> = props => {
@@ -54,6 +57,12 @@ const Component: React.FC<Props> = props => {
     },
     [props.diffs],
   )
+
+  const renderContent = useCallback((str): any => {
+    if (!str) return ''
+
+    return parse(replaceLineBreaksWith(str, '<br />'))
+  }, [])
 
   return (
     <>
@@ -134,13 +143,8 @@ const Component: React.FC<Props> = props => {
                   compareMethod={DiffMethod.SENTENCES}
                   leftTitle={oldDiff.date}
                   rightTitle="Current"
-                  renderContent={(str): any => {
-                    if (!str) {
-                      return parse('<pre></pre>')
-                    }
-
-                    return parse(replaceLineBreaksWith(str, '<br />'))
-                  }}
+                  renderContent={renderContent}
+                  styles={DIFF_CONTAINER_STYLE}
                 />
               </DiffContainer>
             </Grid>
@@ -182,11 +186,6 @@ const DiffHistoryWrapper = styled.div`
 
 const DiffContainer = styledSystem(styled.div`
   ${mediumStyle}
-
-  // diff viewer style
-  td {
-    min-width: 30px !important;
-  }
 `)
 
 export default memo<Props>(Component)
