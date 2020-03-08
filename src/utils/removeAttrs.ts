@@ -11,10 +11,7 @@ const removeAttrs = (node: HTMLElement) => {
 
   if (node.attributes.length) {
     ;[...(node.attributes as any)].forEach(attr => {
-      if (attr.name === 'src') {
-        console.log(node)
-        return
-      }
+      if (attr.name === 'src') return
       node.removeAttribute(attr.name)
     })
   }

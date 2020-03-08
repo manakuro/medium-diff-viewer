@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import ContentComponent from 'src/components/content/Component'
 import getContent from 'src/utils/getContent'
 import format from 'date-fns/format'
-import { useIndexedDB } from 'react-indexed-db'
+import { useIndexedDB } from 'src/hooks/useIndexedDB'
 import getMediumId from 'src/utils/getMediumId'
 import { DB_STORE_NAME } from 'src/const'
 
