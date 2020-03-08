@@ -20,6 +20,7 @@ import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
 import parse from 'html-react-parser'
 import { ContainerTypes, Diff } from 'src/components/content/Container'
 import { Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
+import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 
 type Props = {
   active: boolean
@@ -30,6 +31,7 @@ type Props = {
 
 const DEFAULT_MAX_WIDTH = 'xl' as const
 const DEFAULT_SCROLL = 'paper' as const
+const now = new Date()
 
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
@@ -104,7 +106,9 @@ const Component: React.FC<Props> = props => {
                                 noLink
                                 onClick={() => handleClickViewHistory(index)}
                               >
-                                {d.date}
+                                {formatDistanceStrict(new Date(d.date), now, {
+                                  addSuffix: true,
+                                })}
                               </Link>
                             </TimeLineItemDate>
                           </TimeLineItemBody>
