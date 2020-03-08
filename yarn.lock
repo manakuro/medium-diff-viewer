@@ -10208,10 +10208,9 @@ react-error-overlay@^6.0.6:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.6.tgz#ac4d9dc4c1b5c536c2c312bf66aa2b09bfa384e2"
   integrity sha512-Yzpno3enVzSrSCnnljmr4b/2KUQSMZaPuqmS26t9k4nW7uwJk6STWmH9heNjPuvqUTO3jOSPkHoKgO4+Dw7uIw==
 
-react-indexed-db@^1.0.8:
+"react-indexed-db@git+https://github.com/manakuro/react-indexed-db.git":
   version "1.0.8"
-  resolved "https://registry.yarnpkg.com/react-indexed-db/-/react-indexed-db-1.0.8.tgz#f041fa20257e04893fb8fac1b91054e8cc4a30f9"
-  integrity sha512-nmnPWzJW6qXi5GBwKLplYam0bSoQPsskb5AHw5AKy0yZBzQAGc8vGxKtgilum5wFxsiPlJ+wmSsy6BKQf4Z/Zw==
+  resolved "git+https://github.com/manakuro/react-indexed-db.git#4064ad14ddba2cd9c34b51d79f3970da2c9ea9d0"
   dependencies:
     "@types/react" "^16.9.1"
     react "^16.9.0"

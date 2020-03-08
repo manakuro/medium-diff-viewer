@@ -12,6 +12,7 @@ type Props = {
 
 type State = {
   content: string
+  diffs: Diff[]
 }
 
 export type ContainerTypes = {
@@ -19,6 +20,8 @@ export type ContainerTypes = {
 }
 
 export type Diff = {
+  id: string
+  mediumId: string
   date: string
   content: string
 }
@@ -27,7 +30,8 @@ const mediumId = getMediumId()
 
 const Container: React.FC<Props> = props => {
   const [content, setContent] = useState<State['content']>('')
-  const { getByIndex, openCursor, add } = useIndexedDB(DB_STORE_NAME)
+  const [diffs, setDiffs] = useState<State['diffs']>([])
+  const { getAllByIndex, add } = useIndexedDB(DB_STORE_NAME)
 
   const setCurrentContent = useCallback(() => {
     setContent(getContent())
@@ -35,20 +39,13 @@ const Container: React.FC<Props> = props => {
 
   useEffect(() => {
     ;(async () => {
-      // const diffs = await getByIndex('mediumId', mediumId)
-      // console.log('diffs: ', diffs)
-      const diffs: any = []
+      const storedDiffs = await getAllByIndex('mediumId', mediumId)
+      if (storedDiffs.length) {
+        setDiffs(storedDiffs)
+      }
+      console.log('storedDiffs: ', storedDiffs)
 
-      await openCursor((event: any) => {
-        const cursor = event.target.result
-        if (cursor && cursor.value.mediumId === mediumId) {
-          diffs.push(cursor.value)
-          cursor.continue()
-        }
-      })
-      console.log('diffs: ', diffs)
-
-      if (!diffs) {
+      if (!storedDiffs.length) {
         add({
           mediumId,
           content: getContent(),
@@ -56,14 +53,20 @@ const Container: React.FC<Props> = props => {
         })
       }
     })()
-  }, [add, getByIndex, openCursor])
+
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [])
+
+  diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
+
+  if (!diffs.length) return null
 
   return (
     <ContentComponent
       active={props.active}
       content={content}
       setCurrentContent={setCurrentContent}
-      diffs={[{ content: '', date: '2020/02/02 00:00:00' }]}
+      diffs={diffs}
     />
   )
 }

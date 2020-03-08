@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, memo } from 'react'
 import Dialog from 'src/components/UI/Dialog'
 import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
@@ -37,7 +37,7 @@ const NOW = new Date()
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
-  const [oldDiff, setOldDiff] = useState(props.diffs[0])
+  const [oldDiff, setOldDiff] = useState<Diff>(props.diffs[0])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -93,7 +93,7 @@ const Component: React.FC<Props> = props => {
                 <DiffHistoryWrapper>
                   <TimeLine>
                     {props.diffs.map((d, index) => {
-                      const active = d.date === oldDiff.date
+                      const active = d.id === oldDiff.id
 
                       return (
                         <TimeLineItem key={index} mb={24}>
@@ -136,7 +136,7 @@ const Component: React.FC<Props> = props => {
                   rightTitle="Current"
                   renderContent={(str): any => {
                     if (!str) {
-                      return parse('<pre />')
+                      return parse('<pre></pre>')
                     }
 
                     return parse(replaceLineBreaksWith(str, '<br />'))
@@ -189,4 +189,4 @@ const DiffContainer = styledSystem(styled.div`
   }
 `)
 
-export default Component
+export default memo<Props>(Component)
