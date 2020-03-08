@@ -35,7 +35,6 @@ const DEFAULT_SCROLL = 'paper' as const
 const DIFF_CONTAINER_STYLE = {
   contentText: { fontSize: 16 },
 }
-const NOW = new Date()
 
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
@@ -119,9 +118,13 @@ const Component: React.FC<Props> = props => {
                                 noLink
                                 onClick={() => handleClickViewHistory(index)}
                               >
-                                {formatDistanceStrict(new Date(d.date), NOW, {
-                                  addSuffix: true,
-                                })}
+                                {formatDistanceStrict(
+                                  new Date(d.date),
+                                  new Date(),
+                                  {
+                                    addSuffix: true,
+                                  },
+                                )}
                               </Link>
                             </TimeLineItemDate>
                           </TimeLineItemBody>

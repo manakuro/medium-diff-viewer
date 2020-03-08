@@ -1,12 +1,12 @@
 import {
   ObjectStoreMeta,
-  CreateObjectStore,
   Key,
   openDatabase,
   createTransaction,
   optionsGenerator,
   DBMode,
   validateBeforeTransaction,
+  indexeddbConfiguration,
 } from 'src/utils/indexedDB'
 import { useCallback } from 'react'
 
@@ -29,18 +29,6 @@ export type UseIndexedDB = {
   ) => Promise<void>
   getByIndex: (indexName: string, key: any) => Promise<any>
   getAllByIndex: (indexName: string, key: any) => Promise<any>
-}
-
-let indexeddbConfiguration: { version: number | null; name: string | null } = {
-  version: null,
-  name: null,
-}
-
-export const initDB = ({ name, version, objectStoresMeta }: InitDB) => {
-  indexeddbConfiguration.name = name
-  indexeddbConfiguration.version = version
-  Object.freeze(indexeddbConfiguration)
-  CreateObjectStore(name, version, objectStoresMeta)
 }
 
 export const useIndexedDB = (currentStore: string): UseIndexedDB => {

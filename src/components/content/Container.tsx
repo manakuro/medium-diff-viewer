@@ -43,7 +43,6 @@ const Container: React.FC<Props> = props => {
       if (storedDiffs.length) {
         setDiffs(storedDiffs)
       }
-      console.log('storedDiffs: ', storedDiffs)
 
       if (!storedDiffs.length) {
         add({
@@ -58,6 +57,8 @@ const Container: React.FC<Props> = props => {
   diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
 
   if (!diffs.length) return null
+
+  console.log('diffs: ', diffs)
 
   return (
     <ContentComponent

@@ -1,3 +1,5 @@
+import { InitDB } from 'src/hooks/useIndexedDB'
+
 export type ObjectStoreMeta = {
   store: string
   storeConfig: { keyPath: string; autoIncrement: boolean; [key: string]: any }
@@ -138,4 +140,19 @@ export const openDatabase = (
       }
     }
   })
+}
+
+export let indexeddbConfiguration: {
+  version: number | null
+  name: string | null
+} = {
+  version: null,
+  name: null,
+}
+
+export const initDB = ({ name, version, objectStoresMeta }: InitDB) => {
+  indexeddbConfiguration.name = name
+  indexeddbConfiguration.version = version
+  Object.freeze(indexeddbConfiguration)
+  CreateObjectStore(name, version, objectStoresMeta)
 }
