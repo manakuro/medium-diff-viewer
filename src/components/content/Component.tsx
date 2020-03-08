@@ -32,7 +32,7 @@ type Props = {
 
 const DEFAULT_MAX_WIDTH = 'xl' as const
 const DEFAULT_SCROLL = 'paper' as const
-const now = new Date()
+const NOW = new Date()
 
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
@@ -110,7 +110,7 @@ const Component: React.FC<Props> = props => {
                                 noLink
                                 onClick={() => handleClickViewHistory(index)}
                               >
-                                {formatDistanceStrict(new Date(d.date), now, {
+                                {formatDistanceStrict(new Date(d.date), NOW, {
                                   addSuffix: true,
                                 })}
                               </Link>
@@ -136,7 +136,7 @@ const Component: React.FC<Props> = props => {
                   rightTitle="Current"
                   renderContent={(str): any => {
                     if (!str) {
-                      return parse('<pre></pre>')
+                      return parse('<pre />')
                     }
 
                     return parse(replaceLineBreaksWith(str, '<br />'))

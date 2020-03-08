@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ContentComponent from 'src/components/content/Component'
 import getContent from 'src/utils/getContent'
-import { useLocalStorage, writeStorage } from '@rehooks/local-storage'
-import { LOCAL_STORAGE_KEY } from 'src/const'
 import format from 'date-fns/format'
+import { useIndexedDB } from 'react-indexed-db'
+import getMediumId from 'src/utils/getMediumId'
+import { DB_STORE_NAME } from 'src/const'
 
 type Props = {
   active: boolean
@@ -22,33 +23,47 @@ export type Diff = {
   content: string
 }
 
+const mediumId = getMediumId()
+
 const Container: React.FC<Props> = props => {
   const [content, setContent] = useState<State['content']>('')
-  const [diffs] = useLocalStorage<Diff[]>(LOCAL_STORAGE_KEY)
+  const { getByIndex, openCursor, add } = useIndexedDB(DB_STORE_NAME)
 
   const setCurrentContent = useCallback(() => {
     setContent(getContent())
   }, [])
 
   useEffect(() => {
-    if (!diffs) {
-      // items.sort((a: Diff, b: Diff) => (a.date < b.date ? 1 : -1))
+    ;(async () => {
+      // const diffs = await getByIndex('mediumId', mediumId)
+      // console.log('diffs: ', diffs)
+      const diffs: any = []
 
-      writeStorage(LOCAL_STORAGE_KEY, [
-        {
-          date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      await openCursor((event: any) => {
+        const cursor = event.target.result
+        if (cursor && cursor.value.mediumId === mediumId) {
+          diffs.push(cursor.value)
+          cursor.continue()
+        }
+      })
+      console.log('diffs: ', diffs)
+
+      if (!diffs) {
+        add({
+          mediumId,
           content: getContent(),
-        },
-      ])
-    }
-  }, [diffs])
+          date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+        })
+      }
+    })()
+  }, [add, getByIndex, openCursor])
 
   return (
     <ContentComponent
       active={props.active}
       content={content}
       setCurrentContent={setCurrentContent}
-      diffs={diffs || []}
+      diffs={[{ content: '', date: '2020/02/02 00:00:00' }]}
     />
   )
 }

@@ -5,6 +5,10 @@ import { ThemeProvider } from 'styled-components'
 import theme from 'src/styles/theme'
 import GlobalStyle from 'src/styles/global'
 import { DOCUMENT_APP_ID } from 'src/const'
+import { initDB } from 'react-indexed-db'
+import dbConfig from 'src/db/config'
+
+initDB(dbConfig)
 
 type Props = {}
 

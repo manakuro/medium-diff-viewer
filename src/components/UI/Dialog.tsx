@@ -10,7 +10,7 @@ type StyledProps = {
   fullHeight?: boolean
 }
 
-const WrappedDialog: React.FC<Props> = ({ fullHeight, ...props }) => (
+const WrappedDialog: React.FC<Props> = ({ fullHeight, zIndex, ...props }) => (
   <MaterialUIDialog {...props} />
 )
 
