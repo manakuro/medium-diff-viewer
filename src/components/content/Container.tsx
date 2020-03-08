@@ -5,6 +5,7 @@ import format from 'date-fns/format'
 import { useIndexedDB } from 'src/hooks/useIndexedDB'
 import getMediumId from 'src/utils/getMediumId'
 import { DB_STORE_NAME } from 'src/const'
+import throttle from 'lodash/throttle'
 
 type Props = {
   active: boolean
@@ -37,22 +38,37 @@ const Container: React.FC<Props> = props => {
     setContent(getContent())
   }, [])
 
+  const addDiff = useCallback(() => {
+    add({
+      mediumId,
+      content: getContent(),
+      date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+    })
+  }, [add])
+
   useEffect(() => {
     ;(async () => {
       const storedDiffs = await getAllByIndex('mediumId', mediumId)
-      if (storedDiffs.length) {
-        setDiffs(storedDiffs)
-      }
-
-      if (!storedDiffs.length) {
-        add({
-          mediumId,
-          content: getContent(),
-          date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-        })
-      }
+      if (storedDiffs.length) setDiffs(storedDiffs)
     })()
   }, [add, getAllByIndex])
+
+  useEffect(() => {
+    const monitored = document.querySelector('h3')
+    if (!monitored || !monitored.parentNode) return
+
+    const observer = new MutationObserver(
+      throttle(mutations => {
+        console.log('Add! ', mutations)
+      }, 60000),
+    )
+    observer.observe(monitored.parentNode, {
+      subtree: true,
+      attributes: false,
+      childList: true,
+    })
+    return () => observer.disconnect()
+  }, [addDiff])
 
   diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
 
