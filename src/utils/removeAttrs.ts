@@ -13,6 +13,7 @@ const removeAttrs = (node: HTMLElement) => {
 
   if (node.attributes.length) {
     ;[...(node.attributes as any)].forEach(attr => {
+      if (node.style.backgroundImage && attr.name === 'style') return
       if (ATTRIBUTES_BLACK_LIST.includes(attr.name)) return
       node.removeAttribute(attr.name)
     })

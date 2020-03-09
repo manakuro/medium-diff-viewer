@@ -238,4 +238,81 @@ export const mediumStyle = css`
       }
     }
   }
+
+  // github link
+  div {
+    > a {
+      margin-top: 43px;
+    }
+    > a:first-of-type {
+      background: rgba(255, 255, 255, 0);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      vertical-align: middle;
+      padding: 20px;
+      cursor: text;
+
+      font-family: medium-content-sans-serif-font, -apple-system,
+        BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+        'Open Sans', 'Helvetica Neue', sans-serif;
+      letter-spacing: 0;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 15px;
+      position: relative;
+      overflow: hidden;
+      max-height: 280px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      color: rgba(0, 0, 0, 0.54);
+      -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.09);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.09);
+      display: block;
+      float: left;
+      width: calc(100% - 160px);
+      height: 160px;
+
+      > strong {
+        font-family: medium-content-sans-serif-font, -apple-system,
+          BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+          'Open Sans', 'Helvetica Neue', sans-serif;
+        letter-spacing: 0;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 18px;
+        line-height: 1.3;
+        color: rgba(0, 0, 0, 0.9);
+        display: block;
+        margin-bottom: -8px;
+      }
+
+      > em {
+        font-size: 16px;
+        font-style: normal;
+        color: rgba(0, 0, 0, 0.68);
+        display: block;
+        margin-top: -1px;
+        margin-bottom: 10px;
+        max-height: 120px;
+        overflow: hidden;
+      }
+    }
+
+    > a + a {
+      display: block;
+      float: right;
+      vertical-align: middle;
+      width: 160px;
+      height: 160px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.09);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.09);
+    }
+  }
 `
