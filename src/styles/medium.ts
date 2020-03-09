@@ -207,31 +207,35 @@ export const mediumStyle = css`
   }
 
   // hr
-  hr {
-    margin-top: 52px;
-    margin-bottom: 42px;
-    display: block;
-    border: 0;
-    text-align: center;
-    overflow: visible;
-    box-sizing: content-box;
-    height: 0;
+  td {
+    pre {
+      hr {
+        margin-top: 52px;
+        margin-bottom: 42px;
+        display: block;
+        border: 0;
+        text-align: center;
+        overflow: visible;
+        box-sizing: content-box;
+        height: 0;
 
-    &:before {
-      --x-height-multiplier: 0.342;
-      --baseline-multiplier: 0.22;
-      font-family: medium-content-slab-serif-font, Georgia, Cambria,
-        'Times New Roman', Times, serif;
-      font-weight: 400;
-      font-style: italic;
-      font-size: 30px;
-      letter-spacing: 0.6em;
-      content: '...';
-      display: inline-block;
-      margin-left: 0.6em;
-      color: rgba(0, 0, 0, 0.68);
-      position: relative;
-      top: -30px;
+        &:before {
+          --x-height-multiplier: 0.342;
+          --baseline-multiplier: 0.22;
+          font-family: medium-content-slab-serif-font, Georgia, Cambria,
+            'Times New Roman', Times, serif;
+          font-weight: 400;
+          font-style: italic;
+          font-size: 30px;
+          letter-spacing: 0.6em;
+          content: '...';
+          display: inline-block;
+          margin-left: 0.6em;
+          color: rgba(0, 0, 0, 0.68);
+          position: relative;
+          top: -30px;
+        }
+      }
     }
   }
 `

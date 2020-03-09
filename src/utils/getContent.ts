@@ -9,8 +9,9 @@ const getContent = () => {
 
   const classList = (title.parentNode as any).classList.value
   const nodes = Array.from(document.getElementsByClassName(classList)).reduce(
-    (acc: any[], e: any) => [
+    (acc: any[], e: any, i) => [
       ...acc,
+      ...(i === 0 ? [] : [document.createElement('hr')]),
       ...Array.from(e.cloneNode(true).childNodes),
     ],
     [],
