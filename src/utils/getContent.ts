@@ -7,9 +7,14 @@ const getContent = () => {
     return ''
   }
 
-  const nodes = title.parentNode.cloneNode(true).childNodes as NodeListOf<
-    HTMLElementTagNameMap['div']
-  >
+  const classList = (title.parentNode as any).classList.value
+  const nodes = Array.from(document.getElementsByClassName(classList)).reduce(
+    (acc: any[], e: any) => [
+      ...acc,
+      ...Array.from(e.cloneNode(true).childNodes),
+    ],
+    [],
+  )
 
   nodes.forEach(node => {
     removeAttrs(node)
