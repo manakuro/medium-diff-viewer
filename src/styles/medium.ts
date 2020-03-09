@@ -94,6 +94,10 @@ export const mediumStyle = css`
     font-size: 34px;
     line-height: 1.15;
     letter-spacing: -0.015em;
+
+    em {
+      font-style: normal;
+    }
   }
 
   h4 {
@@ -107,6 +111,10 @@ export const mediumStyle = css`
     font-size: 26px;
     line-height: 1.22;
     letter-spacing: -0.012em;
+
+    em {
+      font-style: normal;
+    }
   }
 
   // paragraph
@@ -148,6 +156,23 @@ export const mediumStyle = css`
   b,
   strong {
     font-weight: 700;
+  }
+
+  ol {
+    list-style-type: decimal;
+    li {
+      margin-left: 30px;
+      margin-bottom: 14px;
+      --x-height-multiplier: 0.375;
+      --baseline-multiplier: 0.17;
+      font-family: medium-content-serif-font, Georgia, Cambria,
+        'Times New Roman', Times, serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 21px;
+      line-height: 1.58;
+      letter-spacing: -0.003em;
+    }
   }
 
   // quote
