@@ -202,6 +202,29 @@ export const mediumStyle = css`
     z-index: 100;
   }
 
+  figcaption {
+    --x-height-multiplier: 0.342;
+    --baseline-multiplier: 0.22;
+    font-family: medium-content-sans-serif-font, 'Lucida Grande',
+      'Lucida Sans Unicode', 'Lucida Sans', Geneva, Arial, sans-serif;
+    font-style: normal;
+    font-feature-settings: 'liga' on, 'lnum' on;
+    -moz-font-feature-settings: 'liga' on, 'lnum' on;
+    -webkit-font-feature-settings: 'liga' on, 'lnum' on;
+    font-size: 16px;
+    line-height: 1.4;
+    color: rgba(0, 0, 0, 0.68);
+    letter-spacing: 0;
+
+    font-weight: 400;
+    text-align: center;
+
+    > span {
+      color: #b3b3b1;
+      font-weight: 400;
+    }
+  }
+
   // anchor link
   p {
     a {
