@@ -158,21 +158,19 @@ export const mediumStyle = css`
     font-weight: 700;
   }
 
+  ul {
+    li {
+      &:before {
+        font-size: 14.8px;
+        padding-top: 4px;
+        padding-right: 15px;
+        content: '\\2022';
+      }
+    }
+  }
+
   ol {
     list-style-type: decimal;
-    li {
-      margin-left: 30px;
-      margin-bottom: 14px;
-      --x-height-multiplier: 0.375;
-      --baseline-multiplier: 0.17;
-      font-family: medium-content-serif-font, Georgia, Cambria,
-        'Times New Roman', Times, serif;
-      font-weight: 400;
-      font-style: normal;
-      font-size: 21px;
-      line-height: 1.58;
-      letter-spacing: -0.003em;
-    }
   }
 
   // quote
@@ -264,7 +262,7 @@ export const mediumStyle = css`
     }
   }
 
-  // github link
+  // external link
   div {
     > a {
       margin-top: 43px;
