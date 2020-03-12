@@ -18,14 +18,16 @@ import theme from 'src/styles/theme'
 import replaceLineBreaksWith from 'src/utils/replaceLineBreaksWith'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
 import parse from 'html-react-parser'
-import { ContainerTypes, Diff } from 'src/components/content/Container'
+import { ContainerTypes } from 'src/components/content/Container'
 import { Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
 import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 import { mediumStyle } from 'src/styles/medium'
+import { Content } from 'src/utils/getContent'
+import { Diff } from 'src/hooks/useDiffs'
 
 type Props = {
   active: boolean
-  content: string
+  content: Content
   setCurrentContent: ContainerTypes['setCurrentContent']
   diffs: Diff[]
 }
@@ -92,7 +94,7 @@ const Component: React.FC<Props> = props => {
         zIndex={Z_INDEX_CONTENT}
       >
         <DialogTitle id="dialog-title" fontSize="1rem">
-          Creating a UI Component with Atomic Design, React and Styled-Component
+          {props.content.title}
         </DialogTitle>
         <DialogContent dividers>
           <Grid container>
@@ -140,8 +142,8 @@ const Component: React.FC<Props> = props => {
               <Title>Diff</Title>
               <DiffContainer>
                 <ReactDiffViewer
-                  oldValue={oldDiff.content}
-                  newValue={props.content}
+                  oldValue={oldDiff.content.body}
+                  newValue={props.content.body}
                   splitView
                   showDiffOnly={false}
                   compareMethod={DiffMethod.SENTENCES}

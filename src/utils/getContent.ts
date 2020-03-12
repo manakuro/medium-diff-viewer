@@ -1,14 +1,23 @@
 import removeAttrs from 'src/utils/removeAttrs'
 import normalizeHtmlWhiteSpace from 'src/utils/normalizeHtmlWhiteSpace'
 
-const getContent = () => {
-  const title = document.querySelector('h3')
-  if (!title || !title.parentNode) {
-    return ''
-  }
+export type Content = {
+  title: string
+  body: string
+}
 
-  const classList = (title.parentNode as any).classList.value
-  const nodes = Array.from(document.getElementsByClassName(classList)).reduce(
+const getContent = () => {
+  const result = {
+    title: '',
+    body: '',
+  }
+  const heading = document.querySelector('h3')
+  if (!heading || !heading.parentNode) return result
+
+  const innerSectionClassList = (heading.parentNode as any).classList.value
+  const nodes = Array.from(
+    document.getElementsByClassName(innerSectionClassList),
+  ).reduce(
     (acc: any[], e: any, i) => [
       ...acc,
       ...(i === 0 ? [] : [document.createElement('hr')]),
@@ -21,11 +30,14 @@ const getContent = () => {
     removeAttrs(node)
   })
 
-  const content = Array.from(nodes).reduce((acc, node) => {
-    return `${acc}\n${node.outerHTML}`
-  }, '')
+  result.body = normalizeHtmlWhiteSpace(
+    Array.from(nodes).reduce((acc, node) => {
+      return `${acc}\n${node.outerHTML}`
+    }, ''),
+  )
+  result.title = normalizeHtmlWhiteSpace(heading.innerText)
 
-  return normalizeHtmlWhiteSpace(content)
+  return result
 }
 
 export default getContent
