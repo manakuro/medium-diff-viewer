@@ -5,8 +5,6 @@ import { DB_STORE_NAME } from 'src/const'
 import format from 'date-fns/format'
 import getMediumId from 'src/utils/getMediumId'
 
-const mediumId = getMediumId()
-
 export type Diff = {
   id: string
   mediumId: string
@@ -15,12 +13,12 @@ export type Diff = {
 }
 
 export const useDiffs = () => {
-  const { getAllByIndex, add } = useIndexedDB(DB_STORE_NAME)
+  const { getAllByIndex, add, getByID } = useIndexedDB(DB_STORE_NAME)
   const [diffs, setDiffs] = useState<Diff[]>([])
 
-  const addDiff = useCallback(() => {
-    add({
-      mediumId,
+  const addDiff = useCallback(async () => {
+    return await add({
+      mediumId: getMediumId(),
       content: getContent(),
       date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     })
@@ -28,10 +26,16 @@ export const useDiffs = () => {
 
   useEffect(() => {
     ;(async () => {
-      const storedDiffs = await getAllByIndex('mediumId', mediumId)
-      if (storedDiffs.length) setDiffs(storedDiffs)
+      let storedDiffs = await getAllByIndex('mediumId', getMediumId())
+      if (!storedDiffs.length) {
+        const addedId = await addDiff()
+        const addedDiff = await getByID(addedId)
+        if (addedDiff) storedDiffs = [addedDiff]
+      }
+
+      setDiffs(storedDiffs)
     })()
-  }, [add, getAllByIndex])
+  }, [addDiff, getAllByIndex, getByID])
 
   diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
 

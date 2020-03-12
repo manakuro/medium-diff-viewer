@@ -37,7 +37,7 @@ const Container: React.FC<Props> = props => {
     const observer = new MutationObserver(
       throttle(mutations => {
         console.log('Add! ', mutations)
-      }, 60000),
+      }, 1000),
     )
     observer.observe(monitored.parentNode, {
       subtree: true,
@@ -47,9 +47,8 @@ const Container: React.FC<Props> = props => {
     return () => observer.disconnect()
   }, [])
 
-  if (!diffs.length) return null
-
   console.log('diffs: ', diffs)
+  if (!diffs.length) return null
 
   return (
     <ContentComponent
