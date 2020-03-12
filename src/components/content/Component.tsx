@@ -42,12 +42,7 @@ const DIFF_CONTAINER_STYLE = {
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(true)
   const [oldDiff, setOldDiff] = useState<Diff>(props.diffs[0])
-
-  const handleDrawerOpen = useCallback(() => {
-    setDrawerOpen(v => !v)
-  }, [])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -103,18 +98,18 @@ const Component: React.FC<Props> = props => {
           <TitleInner>
             <IconButton
               color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              mr={10}
+              aria-label="back"
+              onClick={handleClose}
+              mr={'10px !important' as any}
             >
-              <Icon name="Menu" />
+              <Icon name="faChevronLeft" />
             </IconButton>
             <Title>{props.content.title}</Title>
           </TitleInner>
         </DialogTitle>
         <DialogContent dividers>
           <DialogContentInner>
-            <DiffHistory open={drawerOpen}>
+            <DiffHistory>
               <Sticky>
                 <SectionTitle>Diff History</SectionTitle>
                 <DiffHistoryWrapper>
@@ -192,7 +187,7 @@ const Component: React.FC<Props> = props => {
 
 const Title = styledSystem(styled.div`
   line-height: 1;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
 `)
 
 const TitleInner = styledSystem(styled.div`
@@ -204,22 +199,18 @@ const DialogContentInner = styledSystem(styled.div`
   display: flex;
 `)
 const DiffHistory = styledSystem(styled.div<{ open: boolean }>`
-  width: ${props => (props.open ? '11%' : '34px')};
-  transition: ${props =>
-    props.open
-      ? 'width 100ms cubic-bezier(0.4, 0, 0.6, 1) 0ms'
-      : 'width 125ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;'};
+  width: 11%;
+  padding: 12px;
 `)
 const DiffContent = styledSystem(styled.div`
   flex: 1;
+  padding: 12px;
 `)
 
 const SectionTitle = styledSystem(styled.h3<{ show: boolean }>`
   font-size: 1rem;
   font-weight: ${theme.fontWeights.heading};
   margin-bottom: 24px;
-
-  display: ${props => (props.show ? 'block' : 'none')};
 `)
 
 const Sticky = styled.div`

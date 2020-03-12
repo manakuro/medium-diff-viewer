@@ -11,6 +11,7 @@ const Wrapped: React.FC<Props> = ({
   borderColor,
   backgroundColor,
   color,
+  marginRight,
   ...props
 }) => <MaterialUIIconButton {...props} />
 

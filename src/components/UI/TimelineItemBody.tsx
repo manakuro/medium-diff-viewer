@@ -12,10 +12,9 @@ const TimeLineItemBody: React.FC<Props> = props => {
 }
 
 const Container = styledSystem(styled.div<Props>`
+  display: flex;
   width: 100%;
   height: auto;
-
-  display: ${props => (props.show ? 'flex' : 'none')};
 `)
 
 export default TimeLineItemBody
