@@ -13,7 +13,7 @@ initDB(dbConfig)
 type Props = {}
 
 const App: React.FC<Props> = () => {
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(true)
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
