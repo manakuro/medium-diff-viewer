@@ -16,7 +16,7 @@
 
     "content_scripts": [
       {
-        "matches": ["http://medium.com/p/*/edit", "https://medium.com/p/*/edit"],
+        "matches": ["http://medium.com/*", "https://medium.com/*"],
         "js": ["js/content.js"]
       }
     ],
