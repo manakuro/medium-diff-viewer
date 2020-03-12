@@ -1,4 +1,4 @@
-import React, { useCallback, useState, memo } from 'react'
+import React, { useCallback, useState, memo, useEffect } from 'react'
 import Dialog from 'src/components/UI/Dialog'
 import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
@@ -43,6 +43,11 @@ const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
   const [oldDiff, setOldDiff] = useState<Diff>(props.diffs[0])
+  const [now, setNow] = useState(new Date())
+
+  useEffect(() => {
+    if (props.diffs && props.diffs[0]) setOldDiff(props.diffs[0])
+  }, [props.diffs, setNow])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -50,6 +55,7 @@ const Component: React.FC<Props> = props => {
 
   const handleViewDiff = useCallback(() => {
     setCurrentContent()
+    setNow(new Date())
     setOpen(true)
   }, [setCurrentContent])
 
@@ -132,13 +138,9 @@ const Component: React.FC<Props> = props => {
                                 noLink
                                 onClick={() => handleClickViewHistory(index)}
                               >
-                                {formatDistanceStrict(
-                                  new Date(d.date),
-                                  new Date(),
-                                  {
-                                    addSuffix: true,
-                                  },
-                                )}
+                                {formatDistanceStrict(new Date(d.date), now, {
+                                  addSuffix: true,
+                                })}
                               </Link>
                             </TimeLineItemDate>
                           </TimeLineItemBody>

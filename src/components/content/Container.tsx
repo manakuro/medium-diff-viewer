@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ContentComponent from 'src/components/content/Component'
 import getContent from 'src/utils/getContent'
-import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 import { useDiffs } from 'src/hooks/useDiffs'
 
 type Props = {
@@ -19,33 +19,42 @@ export type ContainerTypes = {
   setCurrentContent: () => void
 }
 
+let observer: MutationObserver
 const Container: React.FC<Props> = props => {
   const [content, setContent] = useState<State['content']>({
     title: '',
     body: '',
   })
-  const { diffs } = useDiffs()
+  const { diffs, hasBeenChangedSinceLastDiff, addDiff } = useDiffs()
 
   const setCurrentContent = useCallback(() => {
     setContent(getContent())
   }, [])
 
   useEffect(() => {
-    const monitored = document.querySelector('h3')
-    if (!monitored || !monitored.parentNode) return
+    const timer = setTimeout(() => {
+      const monitored = document.querySelector('[contenteditable="true"]')
+      if (!monitored) return
 
-    const observer = new MutationObserver(
-      throttle(mutations => {
-        console.log('Add! ', mutations)
-      }, 1000),
-    )
-    observer.observe(monitored.parentNode, {
-      subtree: true,
-      attributes: false,
-      childList: true,
-    })
-    return () => observer.disconnect()
-  }, [])
+      observer = new MutationObserver(
+        debounce(async mutations => {
+          if (hasBeenChangedSinceLastDiff()) {
+            console.log('Add! ', mutations)
+            await addDiff()
+          }
+        }, 2000),
+      )
+      observer.observe(monitored, {
+        subtree: true,
+        attributes: false,
+        childList: true,
+      })
+    }, 5000)
+    return () => {
+      if (observer) observer.disconnect()
+      clearTimeout(timer)
+    }
+  }, [addDiff, hasBeenChangedSinceLastDiff])
 
   console.log('diffs: ', diffs)
   if (!diffs.length) return null
