@@ -4,6 +4,7 @@ import styledSystem, { StyledSystemProps } from 'src/utils/styledSystem'
 
 type Props = {
   className?: string
+  show?: boolean
 } & StyledSystemProps
 
 const TimeLineItemBody: React.FC<Props> = props => {
@@ -11,9 +12,10 @@ const TimeLineItemBody: React.FC<Props> = props => {
 }
 
 const Container = styledSystem(styled.div<Props>`
-  display: flex;
   width: 100%;
   height: auto;
+
+  display: ${props => (props.show ? 'flex' : 'none')};
 `)
 
 export default TimeLineItemBody

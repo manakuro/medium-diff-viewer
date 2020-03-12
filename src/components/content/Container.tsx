@@ -47,8 +47,6 @@ const Container: React.FC<Props> = props => {
     return () => observer.disconnect()
   }, [])
 
-  diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
-
   if (!diffs.length) return null
 
   console.log('diffs: ', diffs)

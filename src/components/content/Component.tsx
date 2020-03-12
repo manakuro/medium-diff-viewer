@@ -4,7 +4,6 @@ import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
 import DialogTitle from 'src/components/UI/DialogTitle'
 import Button from 'src/components/UI/Button'
-import Grid from 'src/components/UI/Grid'
 import TimeLine from 'src/components/UI/Timeline'
 import TimeLineItem from 'src/components/UI/TimelineItem'
 import TimeLineItemDivider from 'src/components/UI/TimelineItemDivider'
@@ -24,6 +23,8 @@ import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 import { mediumStyle } from 'src/styles/medium'
 import { Content } from 'src/utils/getContent'
 import { Diff } from 'src/hooks/useDiffs'
+import Icon from 'src/components/UI/Icon'
+import IconButton from 'src/components/UI/IconButton'
 
 type Props = {
   active: boolean
@@ -41,7 +42,12 @@ const DIFF_CONTAINER_STYLE = {
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(true)
   const [oldDiff, setOldDiff] = useState<Diff>(props.diffs[0])
+
+  const handleDrawerOpen = useCallback(() => {
+    setDrawerOpen(v => !v)
+  }, [])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -94,13 +100,23 @@ const Component: React.FC<Props> = props => {
         zIndex={Z_INDEX_CONTENT}
       >
         <DialogTitle id="dialog-title" fontSize="1rem">
-          {props.content.title}
+          <TitleInner>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              mr={10}
+            >
+              <Icon name="Menu" />
+            </IconButton>
+            <Title>{props.content.title}</Title>
+          </TitleInner>
         </DialogTitle>
         <DialogContent dividers>
-          <Grid container>
-            <Grid item xs={2}>
+          <DialogContentInner>
+            <DiffHistory open={drawerOpen}>
               <Sticky>
-                <Title>Diff History</Title>
+                <SectionTitle>Diff History</SectionTitle>
                 <DiffHistoryWrapper>
                   <TimeLine>
                     {props.diffs.map((d, index) => {
@@ -137,9 +153,9 @@ const Component: React.FC<Props> = props => {
                   </TimeLine>
                 </DiffHistoryWrapper>
               </Sticky>
-            </Grid>
-            <Grid item xs={10}>
-              <Title>Diff</Title>
+            </DiffHistory>
+            <DiffContent>
+              <SectionTitle>Diff</SectionTitle>
               <DiffContainer>
                 <ReactDiffViewer
                   oldValue={oldDiff.content.body}
@@ -153,8 +169,8 @@ const Component: React.FC<Props> = props => {
                   styles={DIFF_CONTAINER_STYLE}
                 />
               </DiffContainer>
-            </Grid>
-          </Grid>
+            </DiffContent>
+          </DialogContentInner>
         </DialogContent>
 
         <DialogActions>
@@ -174,10 +190,36 @@ const Component: React.FC<Props> = props => {
   )
 }
 
-const Title = styledSystem(styled.h3`
+const Title = styledSystem(styled.div`
+  line-height: 1;
+  margin-bottom: 1px;
+`)
+
+const TitleInner = styledSystem(styled.div`
+  display: flex;
+  align-items: center;
+`)
+
+const DialogContentInner = styledSystem(styled.div`
+  display: flex;
+`)
+const DiffHistory = styledSystem(styled.div<{ open: boolean }>`
+  width: ${props => (props.open ? '11%' : '34px')};
+  transition: ${props =>
+    props.open
+      ? 'width 100ms cubic-bezier(0.4, 0, 0.6, 1) 0ms'
+      : 'width 125ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;'};
+`)
+const DiffContent = styledSystem(styled.div`
+  flex: 1;
+`)
+
+const SectionTitle = styledSystem(styled.h3<{ show: boolean }>`
   font-size: 1rem;
   font-weight: ${theme.fontWeights.heading};
   margin-bottom: 24px;
+
+  display: ${props => (props.show ? 'block' : 'none')};
 `)
 
 const Sticky = styled.div`

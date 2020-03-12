@@ -33,6 +33,8 @@ export const useDiffs = () => {
     })()
   }, [add, getAllByIndex])
 
+  diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
+
   return {
     diffs,
     addDiff,
