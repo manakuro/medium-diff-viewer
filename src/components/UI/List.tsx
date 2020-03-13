@@ -5,7 +5,9 @@ import styled from 'styled-components'
 
 type Props = ListProps & StyledSystemProps
 
-const Wrapped: React.FC<Props> = props => <MaterialUIList {...(props as any)} />
+const Wrapped: React.FC<Props> = ({ backgroundColor, ...props }) => (
+  <MaterialUIList {...(props as any)} />
+)
 
 const List = styledSystem(styled(Wrapped)``)
 

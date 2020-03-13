@@ -11,17 +11,17 @@ import replaceLineBreaksWith from 'src/utils/replaceLineBreaksWith'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
 import parse from 'html-react-parser'
 import { ContainerTypes } from 'src/components/content/Container'
-import { Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
+import { white, Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
 import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 import { mediumStyle } from 'src/styles/medium'
 import { Content } from 'src/utils/getContent'
 import { Diff } from 'src/hooks/useDiffs'
 import Icon from 'src/components/UI/Icon'
 import IconButton from 'src/components/UI/IconButton'
-import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from 'src/components/UI/ListItemText'
 import ListItem from 'src/components/UI/ListItem'
 import List from 'src/components/UI/List'
+import ListSubheader from 'src/components/UI/ListSubheader'
 
 type Props = {
   active: boolean
@@ -116,7 +116,10 @@ const Component: React.FC<Props> = props => {
               <Sticky>
                 <SectionTitle>Diff History</SectionTitle>
                 <DiffHistoryWrapper>
-                  <List subheader={<ListSubheader>Today</ListSubheader>}>
+                  <List
+                    subheader={<ListSubheader>Today</ListSubheader>}
+                    backgroundColor={white}
+                  >
                     {props.diffs.map((d, index) => {
                       const selected = d.id === oldDiff.id
                       const date = formatDistanceStrict(new Date(d.date), now, {
