@@ -13,6 +13,7 @@ export const textColour = black
 export const textSubColour = 'rgba(47, 47, 47, 0.78)'
 export const tableCellBorderColour = grey
 export const tableRowHoverColour = lightBlue
+export const hoverColour = 'rgba(3, 168, 124, 0.16) !important' as const
 
 // Transition
 export const transitionDuration = '0.25s' as const

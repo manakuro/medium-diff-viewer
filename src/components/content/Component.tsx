@@ -4,13 +4,6 @@ import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
 import DialogTitle from 'src/components/UI/DialogTitle'
 import Button from 'src/components/UI/Button'
-import TimeLine from 'src/components/UI/Timeline'
-import TimeLineItem from 'src/components/UI/TimelineItem'
-import TimeLineItemDivider from 'src/components/UI/TimelineItemDivider'
-import TimeLineItemDot from 'src/components/UI/TimelineItemDot'
-import TimeLineItemBody from 'src/components/UI/TimelineItemBody'
-import Link from 'src/components/UI/Link'
-import TimeLineItemDate from 'src/components/UI/TimelineItemDate'
 import styledSystem from 'src/utils/styledSystem'
 import styled from 'styled-components'
 import theme from 'src/styles/theme'
@@ -25,6 +18,10 @@ import { Content } from 'src/utils/getContent'
 import { Diff } from 'src/hooks/useDiffs'
 import Icon from 'src/components/UI/Icon'
 import IconButton from 'src/components/UI/IconButton'
+import ListSubheader from '@material-ui/core/ListSubheader'
+import ListItemText from 'src/components/UI/ListItemText'
+import ListItem from 'src/components/UI/ListItem'
+import List from 'src/components/UI/List'
 
 type Props = {
   active: boolean
@@ -119,35 +116,31 @@ const Component: React.FC<Props> = props => {
               <Sticky>
                 <SectionTitle>Diff History</SectionTitle>
                 <DiffHistoryWrapper>
-                  <TimeLine>
+                  <List subheader={<ListSubheader>Today</ListSubheader>}>
                     {props.diffs.map((d, index) => {
-                      const active = d.id === oldDiff.id
+                      const selected = d.id === oldDiff.id
+                      const date = formatDistanceStrict(new Date(d.date), now, {
+                        addSuffix: true,
+                      })
 
                       return (
-                        <TimeLineItem key={index} mb={24}>
-                          <TimeLineItemDivider>
-                            <TimeLineItemDot
-                              width={12}
-                              height={12}
-                              active={active}
-                            />
-                          </TimeLineItemDivider>
-                          <TimeLineItemBody>
-                            <TimeLineItemDate active={active}>
-                              <Link
-                                noLink
-                                onClick={() => handleClickViewHistory(index)}
-                              >
-                                {formatDistanceStrict(new Date(d.date), now, {
-                                  addSuffix: true,
-                                })}
-                              </Link>
-                            </TimeLineItemDate>
-                          </TimeLineItemBody>
-                        </TimeLineItem>
+                        <ListItem
+                          button
+                          divider
+                          alignItems="flex-start"
+                          selected={selected}
+                          onClick={() => handleClickViewHistory(index)}
+                          key={d.id}
+                        >
+                          <ListItemText
+                            primary={date}
+                            fontSize="xs"
+                            color="text.primary"
+                          />
+                        </ListItem>
                       )
                     })}
-                  </TimeLine>
+                  </List>
                 </DiffHistoryWrapper>
               </Sticky>
             </DiffHistory>
@@ -161,7 +154,7 @@ const Component: React.FC<Props> = props => {
                   showDiffOnly={false}
                   compareMethod={DiffMethod.SENTENCES}
                   leftTitle={oldDiff.date}
-                  rightTitle="Current"
+                  rightTitle="Current version"
                   renderContent={renderContent}
                   styles={DIFF_CONTAINER_STYLE}
                 />
@@ -201,7 +194,7 @@ const DialogContentInner = styledSystem(styled.div`
   display: flex;
 `)
 const DiffHistory = styledSystem(styled.div<{ open: boolean }>`
-  width: 11%;
+  width: 15%;
   padding: 12px;
 `)
 const DiffContent = styledSystem(styled.div`
@@ -230,6 +223,11 @@ const DiffContainer = styledSystem(styled.div`
   ${mediumStyle}
 
   tr {
+    td:nth-of-type(2),
+    td:nth-of-type(5) {
+      min-width: 13px;
+    }
+
     td:nth-of-type(3) {
       padding-right: 20px;
     }
