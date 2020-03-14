@@ -25,7 +25,12 @@ const Container: React.FC<Props> = props => {
     title: '',
     body: '',
   })
-  const { diffs, hasBeenChangedSinceLastDiff, addDiff } = useDiffs()
+  const {
+    diffs,
+    hasBeenChangedSinceLastDiff,
+    addDiff,
+    groupDiffByDate,
+  } = useDiffs()
 
   const setCurrentContent = useCallback(() => {
     setContent(getContent())
@@ -59,12 +64,15 @@ const Container: React.FC<Props> = props => {
   console.log('diffs: ', diffs)
   if (!diffs.length) return null
 
+  const groupedDiffsByDate = groupDiffByDate(diffs)
+
   return (
     <ContentComponent
       active={props.active}
       content={content}
       setCurrentContent={setCurrentContent}
       diffs={diffs}
+      groupedDiffsByDate={groupedDiffsByDate}
     />
   )
 }

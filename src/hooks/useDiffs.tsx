@@ -4,12 +4,18 @@ import { useIndexedDB } from 'src/hooks/useIndexedDB'
 import { DB_STORE_NAME } from 'src/const'
 import format from 'date-fns/format'
 import getMediumId from 'src/utils/getMediumId'
+import groupBy from 'lodash/groupBy'
 
 export type Diff = {
-  id: string
+  id: number
   mediumId: string
   date: string
   content: Content
+}
+
+export type Diffs = Diff[]
+export type GroupedDiffsByDate = {
+  [date: string]: Diffs
 }
 
 export const useDiffs = () => {
@@ -39,16 +45,24 @@ export const useDiffs = () => {
     setDiffs(storedDiffs)
   }, [add, fetchDiffs])
 
-  const memoizedDiffs = useMemo(() => {
+  const memoizedDiffs: Diffs = useMemo(() => {
     const currentContent = getContent()
-    const filtered = diffs.filter(d => d.content.body !== currentContent.body)
+    let filtered = diffs.filter(d => d.content.body !== currentContent.body)
 
-    return filtered.sort((a, b) => (a.date < b.date ? 1 : -1))
+    filtered.sort((a, b) => (a.date < b.date ? 1 : -1))
+
+    return filtered
   }, [diffs])
+
+  const groupDiffByDate = useCallback((val: Diffs): GroupedDiffsByDate => {
+    return groupBy(val, diff => {
+      return format(new Date(diff.date), 'yyyy-MM-dd')
+    })
+  }, [])
 
   useEffect(() => {
     ;(async () => {
-      let storedDiffs = await fetchDiffs()
+      const storedDiffs = await fetchDiffs()
       if (!storedDiffs.length) {
         await addDiff()
         return
@@ -62,5 +76,6 @@ export const useDiffs = () => {
     diffs: memoizedDiffs,
     addDiff,
     hasBeenChangedSinceLastDiff,
+    groupDiffByDate,
   }
 }

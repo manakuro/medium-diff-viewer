@@ -11,23 +11,28 @@ import replaceLineBreaksWith from 'src/utils/replaceLineBreaksWith'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
 import parse from 'html-react-parser'
 import { ContainerTypes } from 'src/components/content/Container'
-import { white, Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
-import formatDistanceStrict from 'date-fns/formatDistanceStrict'
+import {
+  tableHeaderColour,
+  Z_INDEX_CONTENT,
+  Z_INDEX_LINK,
+} from 'src/styles/variables'
 import { mediumStyle } from 'src/styles/medium'
 import { Content } from 'src/utils/getContent'
-import { Diff } from 'src/hooks/useDiffs'
+import { Diff, GroupedDiffsByDate } from 'src/hooks/useDiffs'
 import Icon from 'src/components/UI/Icon'
 import IconButton from 'src/components/UI/IconButton'
 import ListItemText from 'src/components/UI/ListItemText'
 import ListItem from 'src/components/UI/ListItem'
 import List from 'src/components/UI/List'
 import ListSubheader from 'src/components/UI/ListSubheader'
+import { formatDiffHistoryDate, formatGroupedDate } from 'src/utils/formatDate'
 
 type Props = {
   active: boolean
   content: Content
   setCurrentContent: ContainerTypes['setCurrentContent']
   diffs: Diff[]
+  groupedDiffsByDate: GroupedDiffsByDate
 }
 
 const DEFAULT_MAX_WIDTH = 'xl' as const
@@ -40,11 +45,10 @@ const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
   const [oldDiff, setOldDiff] = useState<Diff>(props.diffs[0])
-  const [now, setNow] = useState(new Date())
 
   useEffect(() => {
     if (props.diffs && props.diffs[0]) setOldDiff(props.diffs[0])
-  }, [props.diffs, setNow])
+  }, [props.diffs])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -52,13 +56,12 @@ const Component: React.FC<Props> = props => {
 
   const handleViewDiff = useCallback(() => {
     setCurrentContent()
-    setNow(new Date())
     setOpen(true)
   }, [setCurrentContent])
 
   const handleClickViewHistory = useCallback(
-    (index: number) => {
-      setOldDiff(props.diffs[index])
+    (id: number) => {
+      setOldDiff(props.diffs.find(d => d.id === id) as Diff)
     },
     [props.diffs],
   )
@@ -116,34 +119,52 @@ const Component: React.FC<Props> = props => {
               <Sticky>
                 <SectionTitle>Diff History</SectionTitle>
                 <DiffHistoryWrapper>
-                  <List
-                    subheader={<ListSubheader>Today</ListSubheader>}
-                    backgroundColor={white}
-                  >
-                    {props.diffs.map((d, index) => {
-                      const selected = d.id === oldDiff.id
-                      const date = formatDistanceStrict(new Date(d.date), now, {
-                        addSuffix: true,
-                      })
+                  {Object.keys(props.groupedDiffsByDate).map(k => {
+                    const diffs = props.groupedDiffsByDate[k]
+                    const groupedDate = formatGroupedDate(k)
 
-                      return (
-                        <ListItem
-                          button
-                          divider
-                          alignItems="flex-start"
-                          selected={selected}
-                          onClick={() => handleClickViewHistory(index)}
-                          key={d.id}
-                        >
-                          <ListItemText
-                            primary={date}
+                    return (
+                      <List
+                        p={'0 !important'}
+                        subheader={
+                          <ListSubheader
+                            backgroundColor={tableHeaderColour}
                             fontSize="xs"
-                            color="text.primary"
-                          />
-                        </ListItem>
-                      )
-                    })}
-                  </List>
+                            lineHeight={'30px !important' as any}
+                            divider
+                          >
+                            {groupedDate}
+                          </ListSubheader>
+                        }
+                        key={k}
+                      >
+                        {diffs.map((d, i) => {
+                          const selected = d.id === oldDiff.id
+                          const diffHistoryDate = formatDiffHistoryDate(d.date)
+
+                          return (
+                            <ListItem
+                              button
+                              divider
+                              alignItems="flex-start"
+                              selected={selected}
+                              onClick={() => handleClickViewHistory(d.id)}
+                              key={d.id}
+                              pt={'12px !important' as any}
+                              pb={'12px !important' as any}
+                              pl={'32px !important' as any}
+                            >
+                              <ListItemText
+                                primary={diffHistoryDate}
+                                fontSize="xs"
+                                color="text.primary"
+                              />
+                            </ListItem>
+                          )
+                        })}
+                      </List>
+                    )
+                  })}
                 </DiffHistoryWrapper>
               </Sticky>
             </DiffHistory>
@@ -156,7 +177,7 @@ const Component: React.FC<Props> = props => {
                   splitView
                   showDiffOnly={false}
                   compareMethod={DiffMethod.SENTENCES}
-                  leftTitle={oldDiff.date}
+                  leftTitle={formatDiffHistoryDate(oldDiff.date)}
                   rightTitle="Current version"
                   renderContent={renderContent}
                   styles={DIFF_CONTAINER_STYLE}

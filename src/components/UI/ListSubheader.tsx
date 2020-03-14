@@ -3,14 +3,26 @@ import MaterialUIListSubheader, {
   ListSubheaderProps,
 } from '@material-ui/core/ListSubheader'
 import styledSystem, { StyledSystemProps } from 'src/utils/styledSystem'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-type Props = ListSubheaderProps & StyledSystemProps
+type Props = ListSubheaderProps &
+  StyledSystemProps & {
+    divider?: boolean
+  }
 
-const Wrapped: React.FC<Props> = ({ backgroundColor, ...props }) => (
-  <MaterialUIListSubheader {...(props as any)} />
-)
+const Wrapped: React.FC<Props> = ({
+  backgroundColor,
+  lineHeight,
+  divider,
+  ...props
+}) => <MaterialUIListSubheader {...(props as any)} />
 
-const ListSubheader = styledSystem(styled(Wrapped)``)
+const dividerStyle = css`
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  background-clip: padding-box;
+`
+const ListSubheader = styledSystem(styled(Wrapped)`
+  ${props => (props.divider ? dividerStyle : '')}
+`)
 
 export default ListSubheader
