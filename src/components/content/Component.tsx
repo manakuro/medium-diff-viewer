@@ -169,7 +169,7 @@ const Component: React.FC<Props> = props => {
               </Sticky>
             </DiffHistory>
             <DiffContent>
-              <SectionTitle>Diff</SectionTitle>
+              <SectionTitle>Diff Contents</SectionTitle>
               <DiffContainer>
                 <ReactDiffViewer
                   oldValue={oldDiff.content.body}
