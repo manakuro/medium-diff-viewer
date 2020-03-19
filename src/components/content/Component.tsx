@@ -1,11 +1,17 @@
-import React, { useCallback, useState, memo, useEffect } from 'react'
+import React, {
+  useCallback,
+  useState,
+  memo,
+  useEffect,
+  ChangeEvent,
+} from 'react'
 import Dialog from 'src/components/UI/Dialog'
 import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
 import DialogTitle from 'src/components/UI/DialogTitle'
 import Button from 'src/components/UI/Button'
 import styledSystem from 'src/utils/styledSystem'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import theme from 'src/styles/theme'
 import replaceLineBreaksWith from 'src/utils/replaceLineBreaksWith'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
@@ -26,11 +32,13 @@ import ListItem from 'src/components/UI/ListItem'
 import List from 'src/components/UI/List'
 import ListSubheader from 'src/components/UI/ListSubheader'
 import { formatDiffHistoryDate, formatGroupedDate } from 'src/utils/formatDate'
+import TextareaAutosize from 'react-autosize-textarea'
 
 type Props = {
   active: boolean
   content: Content
   setCurrentContent: ContainerTypes['setCurrentContent']
+  onInputDiff: ContainerTypes['handleInputDiff']
   diffs: Diff[]
   groupedDiffsByDate: GroupedDiffsByDate
 }
@@ -144,20 +152,35 @@ const Component: React.FC<Props> = props => {
 
                           return (
                             <ListItem
-                              button
                               divider
                               alignItems="flex-start"
                               selected={selected}
                               onClick={() => handleClickViewHistory(d.id)}
                               key={d.id}
-                              pt={'12px !important' as any}
-                              pb={'12px !important' as any}
+                              pt={'10px !important' as any}
+                              pb={'10px !important' as any}
                               pl={'32px !important' as any}
                             >
                               <ListItemText
-                                primary={diffHistoryDate}
                                 fontSize="xs"
                                 color="text.primary"
+                                primary={
+                                  <DiffHistoryName
+                                    value={d.name}
+                                    name={d.date}
+                                    selected={selected}
+                                    onChange={(
+                                      e: ChangeEvent<HTMLInputElement>,
+                                    ) => {
+                                      props.onInputDiff(e, d.id)
+                                    }}
+                                  />
+                                }
+                                secondary={
+                                  <DiffHistoryDate>
+                                    {diffHistoryDate}
+                                  </DiffHistoryDate>
+                                }
                               />
                             </ListItem>
                           )
@@ -256,6 +279,32 @@ const DiffContainer = styledSystem(styled.div`
       padding-right: 20px;
     }
   }
+`)
+
+const selectedStyle = css`
+  pointer-events: initial;
+
+  &:hover {
+    pointer-events: initial;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    cursor: text;
+  }
+`
+
+const DiffHistoryName = styledSystem(styled(TextareaAutosize)`
+  pointer-events: none;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+
+  ${props => (props.selected ? selectedStyle : '')}
+`)
+
+const DiffHistoryDate = styledSystem(styled.span`
+  font-size: 10px !important;
+  padding-left: 7px;
+  font-style: italic;
 `)
 
 export default memo<Props>(Component)

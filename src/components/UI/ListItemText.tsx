@@ -15,7 +15,8 @@ const Wrapped: React.FC<Props> = ({
 }) => <MaterialUIListItemText {...props} />
 
 const ListItemText = styledSystem(styled(Wrapped)`
-  span {
+  > span,
+  > p {
     font-size: inherit !important;
     color: inherit !important;
   }

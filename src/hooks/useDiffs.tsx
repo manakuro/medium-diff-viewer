@@ -5,11 +5,13 @@ import { DB_STORE_NAME } from 'src/const'
 import format from 'date-fns/format'
 import getMediumId from 'src/utils/getMediumId'
 import groupBy from 'lodash/groupBy'
+import { formatDiffHistoryDate } from 'src/utils/formatDate'
 
 export type Diff = {
   id: number
   mediumId: string
   date: string
+  name: string
   content: Content
 }
 
@@ -19,7 +21,7 @@ export type GroupedDiffsByDate = {
 }
 
 export const useDiffs = () => {
-  const { getAllByIndex, add } = useIndexedDB(DB_STORE_NAME)
+  const { getAllByIndex, add, update } = useIndexedDB(DB_STORE_NAME)
   const [diffs, setDiffs] = useState<Diff[]>([])
 
   const hasBeenChangedSinceLastDiff = useCallback(() => {
@@ -35,15 +37,36 @@ export const useDiffs = () => {
   }, [getAllByIndex])
 
   const addDiff = useCallback(async () => {
+    const now = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
     await add({
       mediumId: getMediumId(),
       content: getContent(),
-      date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      name: formatDiffHistoryDate(now),
+      date: now,
     })
 
     const storedDiffs = await fetchDiffs()
     setDiffs(storedDiffs)
   }, [add, fetchDiffs])
+
+  const updateDiff = useCallback(
+    async (diff: Diff) => {
+      try {
+        await update(diff)
+      } catch (e) {
+        // error handling
+        console.log(e)
+      }
+
+      const storedDiffs = await fetchDiffs()
+      setDiffs(storedDiffs)
+    },
+    [fetchDiffs, update],
+  )
+
+  const findDiff = useCallback((id: number) => diffs.find(d => d.id === id), [
+    diffs,
+  ])
 
   const memoizedDiffs: Diffs = useMemo(() => {
     const currentContent = getContent()
@@ -77,5 +100,7 @@ export const useDiffs = () => {
     addDiff,
     hasBeenChangedSinceLastDiff,
     groupDiffByDate,
+    updateDiff,
+    findDiff,
   }
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import ContentComponent from 'src/components/content/Component'
 import getContent from 'src/utils/getContent'
 import debounce from 'lodash/debounce'
@@ -17,6 +17,7 @@ type State = {
 
 export type ContainerTypes = {
   setCurrentContent: () => void
+  handleInputDiff: (e: ChangeEvent<HTMLInputElement>, id: number) => void
 }
 
 let observer: MutationObserver
@@ -30,11 +31,25 @@ const Container: React.FC<Props> = props => {
     hasBeenChangedSinceLastDiff,
     addDiff,
     groupDiffByDate,
+    findDiff,
+    updateDiff,
   } = useDiffs()
 
   const setCurrentContent = useCallback(() => {
     setContent(getContent())
   }, [])
+
+  const handleInputDiff = useCallback(
+    (e: ChangeEvent<HTMLInputElement>, id: number) => {
+      const diff = findDiff(id)
+      if (!diff) return
+
+      diff.name = e.target.value
+
+      updateDiff(diff)
+    },
+    [findDiff, updateDiff],
+  )
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -73,6 +88,7 @@ const Container: React.FC<Props> = props => {
       setCurrentContent={setCurrentContent}
       diffs={diffs}
       groupedDiffsByDate={groupedDiffsByDate}
+      onInputDiff={handleInputDiff}
     />
   )
 }
