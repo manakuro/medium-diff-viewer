@@ -11,7 +11,7 @@ import DialogActions from 'src/components/UI/DialogActions'
 import DialogTitle from 'src/components/UI/DialogTitle'
 import Button from 'src/components/UI/Button'
 import styledSystem from 'src/utils/styledSystem'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import theme from 'src/styles/theme'
 import replaceLineBreaksWith from 'src/utils/replaceLineBreaksWith'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
@@ -32,7 +32,7 @@ import ListItem from 'src/components/UI/ListItem'
 import List from 'src/components/UI/List'
 import ListSubheader from 'src/components/UI/ListSubheader'
 import { formatDiffHistoryDate, formatGroupedDate } from 'src/utils/formatDate'
-import TextareaAutosize from 'react-autosize-textarea'
+import Textarea from 'src/components/UI/Textarea'
 
 type Props = {
   active: boolean
@@ -134,6 +134,7 @@ const Component: React.FC<Props> = props => {
                     return (
                       <List
                         p={'0 !important'}
+                        key={k}
                         subheader={
                           <ListSubheader
                             backgroundColor={tableHeaderColour}
@@ -144,7 +145,6 @@ const Component: React.FC<Props> = props => {
                             {groupedDate}
                           </ListSubheader>
                         }
-                        key={k}
                       >
                         {diffs.map((d, i) => {
                           const selected = d.id === oldDiff.id
@@ -162,14 +162,14 @@ const Component: React.FC<Props> = props => {
                               pl={'32px !important' as any}
                             >
                               <ListItemText
-                                fontSize="xs"
+                                fontSize="sm"
                                 color="text.primary"
                                 primary={
-                                  <DiffHistoryName
+                                  <Textarea
                                     value={d.name}
                                     name={d.date}
-                                    selected={selected}
-                                    onChange={(
+                                    active={selected}
+                                    onBlur={(
                                       e: ChangeEvent<HTMLInputElement>,
                                     ) => {
                                       props.onInputDiff(e, d.id)
@@ -177,7 +177,7 @@ const Component: React.FC<Props> = props => {
                                   />
                                 }
                                 secondary={
-                                  <DiffHistoryDate>
+                                  <DiffHistoryDate fontSize="xs">
                                     {diffHistoryDate}
                                   </DiffHistoryDate>
                                 }
@@ -281,28 +281,7 @@ const DiffContainer = styledSystem(styled.div`
   }
 `)
 
-const selectedStyle = css`
-  pointer-events: initial;
-
-  &:hover {
-    pointer-events: initial;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    cursor: text;
-  }
-`
-
-const DiffHistoryName = styledSystem(styled(TextareaAutosize)`
-  pointer-events: none;
-  padding: 4px 6px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: transparent;
-
-  ${props => (props.selected ? selectedStyle : '')}
-`)
-
 const DiffHistoryDate = styledSystem(styled.span`
-  font-size: 10px !important;
   padding-left: 7px;
   font-style: italic;
 `)
