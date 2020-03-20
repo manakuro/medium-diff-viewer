@@ -1,4 +1,4 @@
-import React, { useCallback, memo, ChangeEvent } from 'react'
+import React, { memo, ChangeEvent } from 'react'
 import styledSystem from 'src/utils/styledSystem'
 import styled from 'styled-components'
 import theme from 'src/styles/theme'
@@ -14,23 +14,13 @@ import Textarea from 'src/components/UI/Textarea'
 
 type Props = {
   onInputDiff: ContainerTypes['handleInputDiff']
-  diffs: Diff[]
   groupedDiffsByDate: GroupedDiffsByDate
-  setOldDiff: (diff: Diff) => void
   oldDiff: Diff
+  onClickViewHistory: (id: number) => void
 }
 
 const DiffHistory: React.FC<Props> = props => {
-  const { setOldDiff, oldDiff } = props
-
-  const handleClickViewHistory = useCallback(
-    (id: number) => {
-      if (oldDiff.id === id) return
-
-      setOldDiff(props.diffs.find(d => d.id === id) as Diff)
-    },
-    [oldDiff.id, props.diffs, setOldDiff],
-  )
+  const { oldDiff } = props
 
   return (
     <Container>
@@ -65,7 +55,7 @@ const DiffHistory: React.FC<Props> = props => {
                       divider
                       alignItems="flex-start"
                       selected={selected}
-                      onClick={() => handleClickViewHistory(d.id)}
+                      onClick={() => props.onClickViewHistory(d.id)}
                       key={d.id}
                       pt={'10px !important' as any}
                       pb={'10px !important' as any}

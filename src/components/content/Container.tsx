@@ -1,18 +1,11 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import ContentComponent from 'src/components/content/Component'
-import getContent from 'src/utils/getContent'
+import getContent, { Content } from 'src/utils/getContent'
 import debounce from 'lodash/debounce'
 import { useDiffs } from 'src/hooks/useDiffs'
 
 type Props = {
   active: boolean
-}
-
-type State = {
-  content: {
-    title: string
-    body: string
-  }
 }
 
 export type ContainerTypes = {
@@ -22,7 +15,7 @@ export type ContainerTypes = {
 
 let observer: MutationObserver
 const Container: React.FC<Props> = props => {
-  const [content, setContent] = useState<State['content']>({
+  const [content, setContent] = useState<Content>({
     title: '',
     body: '',
   })
@@ -79,17 +72,13 @@ const Container: React.FC<Props> = props => {
   }, [addDiff, shouldUpdateDiff])
 
   console.log('diffs: ', diffs)
-  if (!diffs.length) return null
-
-  const groupedDiffsByDate = groupDiffByDate(diffs)
 
   return (
     <ContentComponent
-      active={props.active}
       content={content}
       setCurrentContent={setCurrentContent}
       diffs={diffs}
-      groupedDiffsByDate={groupedDiffsByDate}
+      groupedDiffsByDate={groupDiffByDate(diffs)}
       onInputDiff={handleInputDiff}
     />
   )

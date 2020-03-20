@@ -1,4 +1,4 @@
-import React, { useCallback, useState, memo } from 'react'
+import React, { useCallback, useState, memo, useEffect } from 'react'
 import Dialog from 'src/components/UI/Dialog'
 import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
@@ -16,7 +16,6 @@ import DiffHistory from 'src/components/content/DiffHistory'
 import DiffContent from 'src/components/content/DiffContent'
 
 type Props = {
-  active: boolean
   content: Content
   setCurrentContent: ContainerTypes['setCurrentContent']
   onInputDiff: ContainerTypes['handleInputDiff']
@@ -26,11 +25,28 @@ type Props = {
 
 const DEFAULT_MAX_WIDTH = 'xl' as const
 const DEFAULT_SCROLL = 'paper' as const
+const initialDiff: Diff = {
+  id: 0,
+  mediumId: '',
+  name: '',
+  date: '',
+  content: {
+    title: '',
+    body: '',
+  },
+}
 
 const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
-  const [oldDiff, setOldDiff] = useState<Diff>(props.diffs[0])
+  const hasDiff = props.diffs.length
+  const disabledViewDiffButton = !hasDiff
+  const latestDiff = hasDiff ? props.diffs[0] : initialDiff
+  const [oldDiff, setOldDiff] = useState<Diff>(latestDiff)
+
+  useEffect(() => {
+    if (oldDiff.id !== latestDiff.id) setOldDiff(latestDiff)
+  }, [latestDiff, oldDiff.id])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -41,12 +57,18 @@ const Component: React.FC<Props> = props => {
     setOpen(true)
   }, [setCurrentContent])
 
+  const handleClickViewHistory = useCallback(
+    (id: number) => {
+      if (oldDiff.id === id) return
+
+      setOldDiff(props.diffs.find(d => d.id === id) as Diff)
+    },
+    [oldDiff.id, props.diffs, setOldDiff],
+  )
+
   return (
     <>
       <Button
-        color="white"
-        borderColor="primary"
-        backgroundColor="primary"
         fontSize="xs"
         position={'fixed !important' as any}
         top={20}
@@ -54,6 +76,7 @@ const Component: React.FC<Props> = props => {
         zIndex={Z_INDEX_LINK}
         variant="outlined"
         size="small"
+        disabled={disabledViewDiffButton}
         onClick={handleViewDiff}
       >
         View diff
@@ -86,10 +109,9 @@ const Component: React.FC<Props> = props => {
           <DialogContentInner>
             <DiffHistory
               onInputDiff={props.onInputDiff}
-              diffs={props.diffs}
               groupedDiffsByDate={props.groupedDiffsByDate}
-              setOldDiff={setOldDiff}
               oldDiff={oldDiff}
+              onClickViewHistory={handleClickViewHistory}
             />
             <DiffContent currentContent={props.content} oldDiff={oldDiff} />
           </DialogContentInner>
