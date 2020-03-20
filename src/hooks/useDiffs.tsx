@@ -6,6 +6,7 @@ import format from 'date-fns/format'
 import getMediumId from 'src/utils/getMediumId'
 import groupBy from 'lodash/groupBy'
 import { formatDiffHistoryDate } from 'src/utils/formatDate'
+import splitByLineBreak from 'src/utils/splitByLinebreak'
 
 export type Diff = {
   id: number
@@ -20,15 +21,12 @@ export type GroupedDiffsByDate = {
   [date: string]: Diffs
 }
 
+const sortByDate = (diffs: Diff[]) =>
+  diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
+
 export const useDiffs = () => {
   const { getAllByIndex, add, update } = useIndexedDB(DB_STORE_NAME)
   const [diffs, setDiffs] = useState<Diff[]>([])
-
-  const hasBeenChangedSinceLastDiff = useCallback(() => {
-    const latest = diffs[0]
-
-    return latest.content.body !== getContent().body
-  }, [diffs])
 
   const fetchDiffs = useCallback(() => {
     return (async () => {
@@ -70,11 +68,9 @@ export const useDiffs = () => {
 
   const memoizedDiffs: Diffs = useMemo(() => {
     const currentContent = getContent()
-    let filtered = diffs.filter(d => d.content.body !== currentContent.body)
+    const filtered = diffs.filter(d => d.content.body !== currentContent.body)
 
-    filtered.sort((a, b) => (a.date < b.date ? 1 : -1))
-
-    return filtered
+    return sortByDate(filtered)
   }, [diffs])
 
   const groupDiffByDate = useCallback((val: Diffs): GroupedDiffsByDate => {
@@ -82,6 +78,16 @@ export const useDiffs = () => {
       return format(new Date(diff.date), 'yyyy-MM-dd')
     })
   }, [])
+
+  const shouldUpdateDiff = useCallback(() => {
+    const sortedDiffs = sortByDate(diffs)
+    const latestContentLength = splitByLineBreak(sortedDiffs[0].content.body)
+      .length
+    const currentContentLength = splitByLineBreak(getContent().body).length
+    const diffLength = Math.abs(currentContentLength - latestContentLength)
+
+    return diffLength >= 3
+  }, [diffs])
 
   useEffect(() => {
     ;(async () => {
@@ -98,7 +104,7 @@ export const useDiffs = () => {
   return {
     diffs: memoizedDiffs,
     addDiff,
-    hasBeenChangedSinceLastDiff,
+    shouldUpdateDiff,
     groupDiffByDate,
     updateDiff,
     findDiff,

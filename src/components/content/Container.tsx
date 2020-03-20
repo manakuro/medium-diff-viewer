@@ -28,7 +28,7 @@ const Container: React.FC<Props> = props => {
   })
   const {
     diffs,
-    hasBeenChangedSinceLastDiff,
+    shouldUpdateDiff,
     addDiff,
     groupDiffByDate,
     findDiff,
@@ -60,7 +60,7 @@ const Container: React.FC<Props> = props => {
 
       observer = new MutationObserver(
         debounce(async mutations => {
-          if (hasBeenChangedSinceLastDiff()) {
+          if (shouldUpdateDiff()) {
             console.log('Add! ', mutations)
             await addDiff()
           }
@@ -71,12 +71,12 @@ const Container: React.FC<Props> = props => {
         attributes: false,
         childList: true,
       })
-    }, 5000)
+    }, 3000)
     return () => {
       if (observer) observer.disconnect()
       clearTimeout(timer)
     }
-  }, [addDiff, hasBeenChangedSinceLastDiff])
+  }, [addDiff, shouldUpdateDiff])
 
   console.log('diffs: ', diffs)
   if (!diffs.length) return null
