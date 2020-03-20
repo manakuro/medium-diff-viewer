@@ -41,10 +41,12 @@ const Container: React.FC<Props> = props => {
 
   const handleInputDiff = useCallback(
     (e: ChangeEvent<HTMLInputElement>, id: number) => {
+      const value = e.target.value
       const diff = findDiff(id)
       if (!diff) return
+      if (diff.name === value) return
 
-      diff.name = e.target.value
+      diff.name = value
 
       updateDiff(diff)
     },
