@@ -13,6 +13,8 @@ const Wrapped: React.FC<Props> = props => (
 const ListItem = styledSystem(styled(Wrapped)`
   background-color: ${props => (props.selected ? hoverColour : '')};
 
+  cursor: pointer;
+
   &:hover {
     background-color: ${hoverColour};
   }

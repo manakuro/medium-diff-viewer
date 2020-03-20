@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useState,
-  memo,
-  useEffect,
-  ChangeEvent,
-} from 'react'
+import React, { useCallback, useState, memo, ChangeEvent } from 'react'
 import Dialog from 'src/components/UI/Dialog'
 import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
@@ -53,10 +47,6 @@ const Component: React.FC<Props> = props => {
   const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
   const [oldDiff, setOldDiff] = useState<Diff>(props.diffs[0])
-
-  useEffect(() => {
-    if (props.diffs && props.diffs[0]) setOldDiff(props.diffs[0])
-  }, [props.diffs])
 
   const handleClose = useCallback(() => {
     setOpen(false)
