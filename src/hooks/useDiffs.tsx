@@ -55,11 +55,8 @@ export const useDiffs = () => {
         // error handling
         console.log(e)
       }
-
-      const storedDiffs = await fetchDiffs()
-      setDiffs(storedDiffs)
     },
-    [fetchDiffs, update],
+    [update],
   )
 
   const findDiff = useCallback((id: number) => diffs.find(d => d.id === id), [

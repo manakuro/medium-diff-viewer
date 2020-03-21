@@ -45,7 +45,7 @@ const Component: React.FC<Props> = props => {
   const [oldDiff, setOldDiff] = useState<Diff>(latestDiff)
 
   useEffect(() => {
-    if (latestDiff) setOldDiff(latestDiff)
+    if (latestDiff.id !== initialDiff.id) setOldDiff(latestDiff)
   }, [latestDiff])
 
   const handleClose = useCallback(() => {
