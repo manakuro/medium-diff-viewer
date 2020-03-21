@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import ContentComponent from 'src/components/content/Component'
 import getContent, { Content } from 'src/utils/getContent'
-import debounce from 'lodash/debounce'
 import { useDiffs } from 'src/hooks/useDiffs'
+import useContentObserver from 'src/hooks/useContentObserver'
 
 type Props = {
   active: boolean
@@ -13,7 +13,6 @@ export type ContainerTypes = {
   handleUpdateDiffName: (value: string, id: number) => void
 }
 
-let observer: MutationObserver
 const Container: React.FC<Props> = props => {
   const [content, setContent] = useState<Content>({
     title: '',
@@ -45,30 +44,7 @@ const Container: React.FC<Props> = props => {
     [findDiff, updateDiff],
   )
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const monitored = document.querySelector('[contenteditable="true"]')
-      if (!monitored) return
-
-      observer = new MutationObserver(
-        debounce(async mutations => {
-          if (shouldUpdateDiff()) {
-            console.log('Add! ', mutations)
-            await addDiff()
-          }
-        }, 2000),
-      )
-      observer.observe(monitored, {
-        subtree: true,
-        attributes: false,
-        childList: true,
-      })
-    }, 3000)
-    return () => {
-      if (observer) observer.disconnect()
-      clearTimeout(timer)
-    }
-  }, [addDiff, shouldUpdateDiff])
+  useContentObserver({ addDiff, shouldUpdateDiff })
 
   console.log('diffs: ', diffs)
 

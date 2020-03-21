@@ -21,6 +21,15 @@ export type GroupedDiffsByDate = {
   [date: string]: Diffs
 }
 
+export type UseDiffs = {
+  diffs: Diffs
+  groupDiffByDate: GroupedDiffsByDate
+  addDiff: () => Promise<void>
+  updateDiff: () => Promise<void>
+  findDiff: (id: number) => Diff | undefined
+  shouldUpdateDiff: () => boolean
+}
+
 const sortByDate = (diffs: Diff[]) =>
   diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
 
