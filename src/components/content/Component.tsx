@@ -18,7 +18,7 @@ import DiffContent from 'src/components/content/DiffContent'
 type Props = {
   content: Content
   setCurrentContent: ContainerTypes['setCurrentContent']
-  onInputDiff: ContainerTypes['handleInputDiff']
+  onUpdateDiffName: ContainerTypes['handleUpdateDiffName']
   diffs: Diff[]
   groupedDiffsByDate: GroupedDiffsByDate
 }
@@ -45,8 +45,8 @@ const Component: React.FC<Props> = props => {
   const [oldDiff, setOldDiff] = useState<Diff>(latestDiff)
 
   useEffect(() => {
-    if (oldDiff.id !== latestDiff.id) setOldDiff(latestDiff)
-  }, [latestDiff, oldDiff.id])
+    if (latestDiff) setOldDiff(latestDiff)
+  }, [latestDiff])
 
   const handleClose = useCallback(() => {
     setOpen(false)
@@ -81,55 +81,57 @@ const Component: React.FC<Props> = props => {
       >
         View diff
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullWidth
-        fullHeight
-        maxWidth={DEFAULT_MAX_WIDTH}
-        scroll={DEFAULT_SCROLL}
-        fullScreen
-        aria-labelledby="dialog-title"
-        zIndex={Z_INDEX_CONTENT}
-      >
-        <DialogTitle id="dialog-title" fontSize="1rem">
-          <TitleInner>
-            <IconButton
-              color="inherit"
-              aria-label="back"
-              onClick={handleClose}
-              mr={'10px !important' as any}
-            >
-              <Icon name="faChevronLeft" />
-            </IconButton>
-            <Title>{props.content.title}</Title>
-          </TitleInner>
-        </DialogTitle>
-        <DialogContent dividers>
-          <DialogContentInner>
-            <DiffHistory
-              onInputDiff={props.onInputDiff}
-              groupedDiffsByDate={props.groupedDiffsByDate}
-              oldDiff={oldDiff}
-              onClickViewHistory={handleClickViewHistory}
-            />
-            <DiffContent currentContent={props.content} oldDiff={oldDiff} />
-          </DialogContentInner>
-        </DialogContent>
+      {hasDiff && (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          fullWidth
+          fullHeight
+          maxWidth={DEFAULT_MAX_WIDTH}
+          scroll={DEFAULT_SCROLL}
+          fullScreen
+          aria-labelledby="dialog-title"
+          zIndex={Z_INDEX_CONTENT}
+        >
+          <DialogTitle id="dialog-title" fontSize="1rem">
+            <TitleInner>
+              <IconButton
+                color="inherit"
+                aria-label="back"
+                onClick={handleClose}
+                mr={'10px !important' as any}
+              >
+                <Icon name="faChevronLeft" />
+              </IconButton>
+              <Title>{props.content.title}</Title>
+            </TitleInner>
+          </DialogTitle>
+          <DialogContent dividers>
+            <DialogContentInner>
+              <DiffHistory
+                onUpdateDiffName={props.onUpdateDiffName}
+                groupedDiffsByDate={props.groupedDiffsByDate}
+                oldDiff={oldDiff}
+                onClickViewHistory={handleClickViewHistory}
+              />
+              <DiffContent currentContent={props.content} oldDiff={oldDiff} />
+            </DialogContentInner>
+          </DialogContent>
 
-        <DialogActions>
-          <Button
-            onClick={handleClose}
-            color="white"
-            borderColor="primary"
-            backgroundColor="primary"
-            fontSize="sm"
-            variant="contained"
-          >
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+          <DialogActions>
+            <Button
+              onClick={handleClose}
+              color="white"
+              borderColor="primary"
+              backgroundColor="primary"
+              fontSize="sm"
+              variant="contained"
+            >
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </>
   )
 }

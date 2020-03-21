@@ -7,9 +7,13 @@ import theme from 'src/styles/theme'
 
 type Props = ButtonProps & StyledSystemProps
 
-const Wrapped: React.FC<Props> = ({ color, ...props }) => (
-  <MaterialUIButton {...props} />
-)
+const Wrapped: React.FC<Props> = ({
+  color,
+  zIndex,
+  backgroundColor,
+  borderColor,
+  ...props
+}) => <MaterialUIButton {...props} />
 
 const primaryStyle = css`
   color: ${theme.colors.white};

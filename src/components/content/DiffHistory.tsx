@@ -1,4 +1,4 @@
-import React, { memo, ChangeEvent } from 'react'
+import React, { memo, ChangeEvent, useCallback } from 'react'
 import styledSystem from 'src/utils/styledSystem'
 import styled from 'styled-components'
 import theme from 'src/styles/theme'
@@ -13,14 +13,21 @@ import { formatDiffHistoryDate, formatGroupedDate } from 'src/utils/formatDate'
 import Textarea from 'src/components/UI/Textarea'
 
 type Props = {
-  onInputDiff: ContainerTypes['handleInputDiff']
+  onUpdateDiffName: ContainerTypes['handleUpdateDiffName']
   groupedDiffsByDate: GroupedDiffsByDate
   oldDiff: Diff
   onClickViewHistory: (id: number) => void
 }
 
 const DiffHistory: React.FC<Props> = props => {
-  const { oldDiff } = props
+  const { oldDiff, onUpdateDiffName } = props
+
+  const handleBlur = useCallback(
+    (e: ChangeEvent<HTMLInputElement>, id: number) => {
+      onUpdateDiffName(e.target.value, id)
+    },
+    [onUpdateDiffName],
+  )
 
   return (
     <Container>
@@ -69,9 +76,9 @@ const DiffHistory: React.FC<Props> = props => {
                             value={d.name}
                             name={d.date}
                             active={selected}
-                            onBlur={(e: ChangeEvent<HTMLInputElement>) => {
-                              props.onInputDiff(e, d.id)
-                            }}
+                            onBlur={(e: ChangeEvent<HTMLInputElement>) =>
+                              handleBlur(e, d.id)
+                            }
                           />
                         }
                         secondary={
