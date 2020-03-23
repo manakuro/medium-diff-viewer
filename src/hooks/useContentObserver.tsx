@@ -15,9 +15,8 @@ const useContentObserver = (props: Props) => {
       if (!monitored) return
 
       observer = new MutationObserver(
-        debounce(async mutations => {
+        debounce(async () => {
           if (props.shouldUpdateDiff()) {
-            console.log('Add! ', mutations)
             await props.addDiff()
           }
         }, 2000),
