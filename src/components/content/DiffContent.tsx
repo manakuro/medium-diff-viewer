@@ -19,14 +19,12 @@ const DIFF_CONTAINER_STYLE = {
   contentText: { fontSize: 16 },
 }
 
-const Component: React.FC<Props> = props => {
+const DiffContent: React.FC<Props> = props => {
   const renderContent = useCallback((str): any => {
     if (!str) return ''
 
     return parse(replaceLineBreaksWith(str, '<br />'))
   }, [])
-
-  console.log('hey Diff Content!')
 
   return (
     <Container>
@@ -74,4 +72,4 @@ const Inner = styledSystem(styled.div`
   }
 `)
 
-export default memo<Props>(Component)
+export default memo<Props>(DiffContent)
