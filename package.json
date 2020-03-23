@@ -50,7 +50,7 @@
     "ts-loader": "^6.2.1",
     "tslint-config-airbnb": "^5.11.1",
     "tslint-react": "^4.2.0",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.3",
     "webpack": "^4.1.1",
     "webpack-cli": "^3.1.1",
     "webpack-merge": "^4.1.4"
@@ -70,6 +70,7 @@
     "lodash": "^4.17.15",
     "re-resizable": "^6.1.1",
     "react": "^16.12.0",
+    "react-autosize-textarea": "^7.0.0",
     "react-diff-viewer": "^3.0.1",
     "react-dom": "^16.12.0",
     "react-draggable": "^4.2.0",

@@ -18,7 +18,6 @@ const App: React.FC<Props> = () => {
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      console.log('message: ', message)
       setActive(message.active)
     })
   }, [])
@@ -31,7 +30,6 @@ const App: React.FC<Props> = () => {
     if (isMediumEditURL(window.location.href)) setActive(true)
   }, [])
 
-  console.log('active: ', active)
   if (!active) return null
 
   return (

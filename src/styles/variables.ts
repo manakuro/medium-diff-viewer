@@ -1,11 +1,12 @@
 // Colour
 import { css } from 'styled-components'
 
-export const lightGrey = '#F2F2F2' as const
+// export const lightGrey = '#F2F2F2' as const
 export const grey = 'rgba(224, 224, 224, 1)' as const
 export const white = '#fff' as const
 export const black = '#2f2f2f' as const
 export const lightBlue = '#f5f8ff' as const
+export const lightGrey = '#fafbfc' as const
 
 export const primaryColour = '#03a87c' as const
 export const backgroundColour = '#FCFCFC' as const
@@ -13,6 +14,8 @@ export const textColour = black
 export const textSubColour = 'rgba(47, 47, 47, 0.78)'
 export const tableCellBorderColour = grey
 export const tableRowHoverColour = lightBlue
+export const hoverColour = 'rgba(3, 168, 124, 0.16) !important' as const
+export const tableHeaderColour = `${lightGrey} !important`
 
 // Transition
 export const transitionDuration = '0.25s' as const
