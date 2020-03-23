@@ -25,6 +25,7 @@ const Container: React.FC<Props> = props => {
     groupDiffByDate,
     findDiff,
     updateDiff,
+    loadingDiff,
   } = useDiffs()
 
   const setCurrentContent = useCallback(() => {
@@ -46,8 +47,6 @@ const Container: React.FC<Props> = props => {
 
   useContentObserver({ addDiff, shouldUpdateDiff })
 
-  console.log('diffs: ', diffs)
-
   return (
     <ContentComponent
       content={content}
@@ -55,6 +54,7 @@ const Container: React.FC<Props> = props => {
       diffs={diffs}
       groupedDiffsByDate={groupDiffByDate(diffs)}
       onUpdateDiffName={handleUpdateDiffName}
+      loading={loadingDiff}
     />
   )
 }

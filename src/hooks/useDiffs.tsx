@@ -28,6 +28,7 @@ export type UseDiffs = {
   updateDiff: () => Promise<void>
   findDiff: (id: number) => Diff | undefined
   shouldUpdateDiff: () => boolean
+  loadingDiff: boolean
 }
 
 const sortByDate = (diffs: Diff[]) =>
@@ -36,6 +37,7 @@ const sortByDate = (diffs: Diff[]) =>
 export const useDiffs = () => {
   const { getAllByIndex, add, update } = useIndexedDB(DB_STORE_NAME)
   const [diffs, setDiffs] = useState<Diff[]>([])
+  const [loadingDiff, setLoadingDiff] = useState<boolean>(false)
 
   const fetchDiffs = useCallback(() => {
     return (async () => {
@@ -44,6 +46,7 @@ export const useDiffs = () => {
   }, [getAllByIndex])
 
   const addDiff = useCallback(async () => {
+    setLoadingDiff(true)
     const now = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
     await add({
       mediumId: getMediumId(),
@@ -54,6 +57,10 @@ export const useDiffs = () => {
 
     const storedDiffs = await fetchDiffs()
     setDiffs(storedDiffs)
+
+    window.setTimeout(() => {
+      setLoadingDiff(false)
+    }, 1500)
   }, [add, fetchDiffs])
 
   const updateDiff = useCallback(
@@ -114,5 +121,6 @@ export const useDiffs = () => {
     groupDiffByDate,
     updateDiff,
     findDiff,
+    loadingDiff,
   }
 }
