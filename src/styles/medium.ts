@@ -56,6 +56,34 @@ export const mediumStyle = css`
 
   ${resetCss}
 
+  // title
+  .graf--title {
+    color: rgba(0, 0, 0, 0.84) !important;
+    --x-height-multiplier: 0.342;
+    --baseline-multiplier: 0.22;
+    font-family: medium-content-title-font, Georgia, Cambria, 'Times New Roman',
+      Times, serif;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+  // subtile
+  .graf--subtitle {
+    margin-top: 5px;
+    margin-bottom: 22px;
+    font-weight: 400;
+    --x-height-multiplier: 0.342;
+    --baseline-multiplier: 0.22;
+    font-family: medium-content-sans-serif-font, 'Lucida Grande',
+      'Lucida Sans Unicode', 'Lucida Sans', Geneva, Arial, sans-serif;
+    font-style: normal;
+    font-size: 28px;
+    line-height: 1.22;
+    letter-spacing: -0.012em;
+    color: rgba(0, 0, 0, 0.54) !important;
+  }
+
   &:focus {
     outline: 0;
     word-break: break-word;
