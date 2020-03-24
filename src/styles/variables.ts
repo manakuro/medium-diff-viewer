@@ -1,7 +1,6 @@
 // Colour
 import { css } from 'styled-components'
 
-// export const lightGrey = '#F2F2F2' as const
 export const grey = 'rgba(224, 224, 224, 1)' as const
 export const white = '#fff' as const
 export const black = '#2f2f2f' as const

@@ -6,7 +6,8 @@
     "version": "1.0.0",
 
     "browser_action": {
-        "default_icon": "icon_active.png"
+      "default_title": "Diff Viewer for Medium",
+      "default_icon": "icon.png"
     },
 
     "background": {
@@ -22,9 +23,7 @@
     ],
 
     "icons": {
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
+        "128": "icon.png"
     },
 
     "permissions": [
