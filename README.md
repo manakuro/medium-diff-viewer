@@ -3,7 +3,7 @@ A simple and clean diff viewer for Medium stories implemented by [@manakuro](htt
 
 You can get this at Chrome Web Store!
 
-![Summary](https://i.imgur.com/auGM8hS.png)
+![Main Image](https://i.imgur.com/C7zfSM7.jpg)
 
 
 ## Features
