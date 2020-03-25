@@ -8,13 +8,14 @@ import ListItem from 'src/components/UI/ListItem'
 import List from 'src/components/UI/List'
 import ListSubheader from 'src/components/UI/ListSubheader'
 import { formatDiffHistoryDate, formatGroupedDate } from 'src/utils/formatDate'
-import Textarea from 'src/components/UI/Textarea'
 import Box from 'src/components/UI/Box'
 import Text from 'src/components/UI/Text'
 import Heading from 'src/components/UI/Heading'
+import DiffHistoryListItem from 'src/components/content/DiffHistoryListItem'
 
 type Props = {
   onUpdateDiffName: ContainerTypes['handleUpdateDiffName']
+  onDeleteDiff: ContainerTypes['handleDeleteDiff']
   groupedDiffsByDate: GroupedDiffsByDate
   oldDiff: Diff
   onClickViewHistory: (id: number) => void
@@ -26,6 +27,7 @@ const DiffHistory: React.FC<Props> = props => {
     onUpdateDiffName,
     groupedDiffsByDate,
     onClickViewHistory,
+    onDeleteDiff,
   } = props
 
   const handleBlur = useCallback(
@@ -80,14 +82,11 @@ const DiffHistory: React.FC<Props> = props => {
                         fontSize="sm"
                         color="text.primary"
                         primary={
-                          <Textarea
-                            value={d.name}
-                            name={d.date}
-                            active={selected}
-                            onBlur={(e: ChangeEvent<HTMLInputElement>) =>
-                              handleBlur(e, d.id)
-                            }
-                            width="80%"
+                          <DiffHistoryListItem
+                            diff={d}
+                            handleBlur={handleBlur}
+                            selected={selected}
+                            onDeleteDiff={onDeleteDiff}
                           />
                         }
                         secondary={

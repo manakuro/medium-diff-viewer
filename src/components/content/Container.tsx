@@ -11,6 +11,7 @@ type Props = {
 export type ContainerTypes = {
   setCurrentContent: () => void
   handleUpdateDiffName: (value: string, id: number) => void
+  handleDeleteDiff: (id: number) => void
 }
 
 const Container: React.FC<Props> = () => {
@@ -26,6 +27,7 @@ const Container: React.FC<Props> = () => {
     findDiff,
     updateDiff,
     loadingDiff,
+    deleteDiff,
   } = useDiffs()
 
   const setCurrentContent = useCallback(() => {
@@ -45,6 +47,16 @@ const Container: React.FC<Props> = () => {
     [findDiff, updateDiff],
   )
 
+  const handleDeleteDiff = useCallback(
+    async (id: number) => {
+      const diff = findDiff(id)
+      if (!diff) return
+
+      await deleteDiff(diff)
+    },
+    [deleteDiff, findDiff],
+  )
+
   useContentObserver({ addDiff, shouldUpdateDiff })
 
   return (
@@ -54,6 +66,7 @@ const Container: React.FC<Props> = () => {
       diffs={diffs}
       groupedDiffsByDate={groupDiffByDate(diffs)}
       onUpdateDiffName={handleUpdateDiffName}
+      onDeleteDiff={handleDeleteDiff}
       loading={loadingDiff}
     />
   )

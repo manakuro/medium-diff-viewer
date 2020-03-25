@@ -18,6 +18,7 @@ type Props = {
   content: Content
   setCurrentContent: ContainerTypes['setCurrentContent']
   onUpdateDiffName: ContainerTypes['handleUpdateDiffName']
+  onDeleteDiff: ContainerTypes['handleDeleteDiff']
   diffs: Diff[]
   groupedDiffsByDate: GroupedDiffsByDate
   loading: boolean
@@ -115,6 +116,7 @@ const Component: React.FC<Props> = props => {
                 groupedDiffsByDate={props.groupedDiffsByDate}
                 oldDiff={oldDiff}
                 onClickViewHistory={handleClickViewHistory}
+                onDeleteDiff={props.onDeleteDiff}
               />
               <DiffContent currentContent={props.content} oldDiff={oldDiff} />
             </Box>

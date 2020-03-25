@@ -14,6 +14,8 @@ import CheckCircle from '@material-ui/icons/CheckCircle'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
 import BubbleChart from '@material-ui/icons/BubbleChart'
 import ListAlt from '@material-ui/icons/ListAlt'
+import MoreHorizOutlined from '@material-ui/icons/MoreHorizOutlined'
+import MoreVertOutlined from '@material-ui/icons/MoreVertOutlined'
 import WbIncandescentOutlined from '@material-ui/icons/WbIncandescentOutlined'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { hover, primaryColour, textSubColour } from 'src/styles/variables'
@@ -31,7 +33,7 @@ type Props = {
   className?: string
   hover?: boolean
   primary?: boolean
-  onClick?: () => void
+  onClick?: (event: any) => void
 } & StyledSystemProps
 
 export type Icons = keyof typeof icons
@@ -54,6 +56,8 @@ const icons = {
   WbIncandescentOutlined,
   ExpandMoreIcon,
   Menu,
+  MoreHorizOutlined,
+  MoreVertOutlined,
   faTwitter: () => <FontAwesomeIcon icon={faTwitter} />,
   faGithub: () => <FontAwesomeIcon icon={faGithub} />,
   faChevronRight: () => <FontAwesomeIcon icon={faChevronRight} />,

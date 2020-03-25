@@ -26,6 +26,7 @@ export type UseDiffs = {
   groupDiffByDate: GroupedDiffsByDate
   addDiff: () => Promise<void>
   updateDiff: () => Promise<void>
+  deleteDiff: () => Promise<void>
   findDiff: (id: number) => Diff | undefined
   shouldUpdateDiff: () => boolean
   loadingDiff: boolean
@@ -35,7 +36,9 @@ const sortByDate = (diffs: Diff[]) =>
   diffs.sort((a, b) => (a.date < b.date ? 1 : -1))
 
 export const useDiffs = () => {
-  const { getAllByIndex, add, update } = useIndexedDB(DB_STORE_NAME)
+  const { getAllByIndex, add, update, deleteRecord } = useIndexedDB(
+    DB_STORE_NAME,
+  )
   const [diffs, setDiffs] = useState<Diff[]>([])
   const [loadingDiff, setLoadingDiff] = useState<boolean>(false)
 
@@ -73,6 +76,21 @@ export const useDiffs = () => {
       }
     },
     [update],
+  )
+
+  const deleteDiff = useCallback(
+    async (diff: Diff) => {
+      try {
+        await deleteRecord(diff.id)
+
+        const storedDiffs = await fetchDiffs()
+        setDiffs(storedDiffs)
+      } catch (e) {
+        // error handling
+        console.log(e)
+      }
+    },
+    [deleteRecord, fetchDiffs],
   )
 
   const findDiff = useCallback((id: number) => diffs.find(d => d.id === id), [
@@ -122,5 +140,6 @@ export const useDiffs = () => {
     updateDiff,
     findDiff,
     loadingDiff,
+    deleteDiff,
   }
 }
