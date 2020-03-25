@@ -7,10 +7,18 @@ const INHERITED_CLASS_LIST = [
   EXTERNAL_LINK_CLASS_NAME,
 ]
 
-const inheritAttrs = (attr: { value: string }, node: HTMLElement) => {
+export const inheritClass = (attr: { value: string }, node: HTMLElement) => {
   INHERITED_CLASS_LIST.forEach(c => {
     if (attr.value.includes(c)) node.classList.add(c)
   })
 }
 
-export default inheritAttrs
+export const inheritImgSrc = (src: string, node: HTMLElement) => {
+  node.setAttribute(
+    'src',
+    src.replace(
+      /https:\/\/cdn-images-1\.medium.com\/max\/.*\//g,
+      'https://cdn-images-1.medium.com/max/1600/',
+    ),
+  )
+}

@@ -1,6 +1,4 @@
-import inheritAttrs from 'src/utils/inheritAttrs'
-
-const ATTRIBUTES_BLACK_LIST = ['src']
+import { inheritClass, inheritImgSrc } from 'src/utils/inheritAttrs'
 
 const removeAttrs = (node: HTMLElement) => {
   if (!node.tagName) return
@@ -16,10 +14,13 @@ const removeAttrs = (node: HTMLElement) => {
   if (node.attributes.length) {
     ;[...(node.attributes as any)].forEach(attr => {
       if (node.style.backgroundImage && attr.name === 'style') return
-      if (ATTRIBUTES_BLACK_LIST.includes(attr.name)) return
+      if (attr.name === 'src') {
+        inheritImgSrc(attr.value, node)
+        return
+      }
       node.removeAttribute(attr.name)
 
-      inheritAttrs(attr, node)
+      inheritClass(attr, node)
     })
   }
 }
