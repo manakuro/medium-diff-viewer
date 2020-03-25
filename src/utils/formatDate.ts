@@ -12,10 +12,5 @@ export const formatGroupedDate = (date: string) => {
   return format(dateObj, 'MMMM d')
 }
 
-export const formatDiffHistoryDate = (date: string) => {
-  // const date = formatDistanceStrict(new Date(d.date), now, {
-  //   addSuffix: true,
-  // })
-
-  return format(new Date(date), 'MMMM d, h:mm aaa')
-}
+export const formatDiffHistoryDate = (date: string) =>
+  format(new Date(date), 'MMMM d, h:mm aaa')
