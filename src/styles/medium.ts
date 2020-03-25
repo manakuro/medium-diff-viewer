@@ -314,10 +314,26 @@ export const mediumStyle = css`
   }
 
   // external link
-  div {
-    > a {
-      margin-top: 43px;
-    }
+  .graf--mixtapeEmbed {
+    margin-top: 52px;
+    font-family: medium-content-sans-serif-font, -apple-system,
+      BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+      'Open Sans', 'Helvetica Neue', sans-serif;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+    position: relative;
+    overflow: hidden;
+    max-height: 280px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.54);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.09);
+    display: table;
+    width: 100%;
+
     > a:first-of-type {
       background: rgba(255, 255, 255, 0);
       text-decoration: none;
