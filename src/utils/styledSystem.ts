@@ -29,6 +29,7 @@ import {
   HeightProps,
   MinHeightProps,
 } from 'styled-system'
+import React from 'react'
 
 type Tag = Parameters<typeof styled>[0]
 
@@ -44,7 +45,10 @@ export type StyledSystemProps = SpaceProps &
   WidthProps &
   MinWidthProps &
   HeightProps &
-  MinHeightProps
+  MinHeightProps & {
+    as?: keyof JSX.IntrinsicElements | React.ComponentType<any>
+    forwardedAs?: keyof JSX.IntrinsicElements | React.ComponentType<any>
+  }
 
 const styledSystem = (tag: Tag) => {
   return styled(tag)<StyledSystemProps>(

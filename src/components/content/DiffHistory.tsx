@@ -11,6 +11,8 @@ import List from 'src/components/UI/List'
 import ListSubheader from 'src/components/UI/ListSubheader'
 import { formatDiffHistoryDate, formatGroupedDate } from 'src/utils/formatDate'
 import Textarea from 'src/components/UI/Textarea'
+import Box from 'src/components/UI/Box'
+import Text from 'src/components/UI/Text'
 
 type Props = {
   onUpdateDiffName: ContainerTypes['handleUpdateDiffName']
@@ -35,10 +37,10 @@ const DiffHistory: React.FC<Props> = props => {
   )
 
   return (
-    <Container>
+    <Box width="15%" p={12}>
       <Sticky>
         <SectionTitle>Diff History</SectionTitle>
-        <DiffHistoryWrapper>
+        <Box width="100%" height={600} overflowY="scroll">
           {Object.keys(groupedDiffsByDate).map(k => {
             const diffs = groupedDiffsByDate[k]
             const groupedDate = formatGroupedDate(k)
@@ -87,9 +89,14 @@ const DiffHistory: React.FC<Props> = props => {
                           />
                         }
                         secondary={
-                          <DiffHistoryDate fontSize="xs">
+                          <Text
+                            fontSize="xs"
+                            pl={7}
+                            fontStyle="italic"
+                            as="span"
+                          >
                             {diffHistoryDate}
-                          </DiffHistoryDate>
+                          </Text>
                         }
                       />
                     </ListItem>
@@ -98,37 +105,21 @@ const DiffHistory: React.FC<Props> = props => {
               </List>
             )
           })}
-        </DiffHistoryWrapper>
+        </Box>
       </Sticky>
-    </Container>
+    </Box>
   )
 }
 
-const Container = styledSystem(styled.div<{ open: boolean }>`
-  width: 15%;
-  padding: 12px;
-`)
-
-const SectionTitle = styledSystem(styled.h3<{ show: boolean }>`
+const SectionTitle = styledSystem(styled.h3`
   font-size: 1rem;
   font-weight: ${theme.fontWeights.heading};
   margin-bottom: 24px;
 `)
 
-const Sticky = styledSystem(styled.div`
+const Sticky = styled(Box)`
   position: sticky;
   top: 0;
-`)
-
-const DiffHistoryWrapper = styledSystem(styled.div`
-  width: 100%;
-  height: 600px;
-  overflow-y: scroll;
-`)
-
-const DiffHistoryDate = styledSystem(styled.span`
-  padding-left: 7px;
-  font-style: italic;
-`)
+`
 
 export default memo<Props>(DiffHistory)

@@ -4,8 +4,6 @@ import DialogContent from 'src/components/UI/DialogContent'
 import DialogActions from 'src/components/UI/DialogActions'
 import DialogTitle from 'src/components/UI/DialogTitle'
 import Button from 'src/components/UI/Button'
-import styledSystem from 'src/utils/styledSystem'
-import styled from 'styled-components'
 import { ContainerTypes } from 'src/components/content/Container'
 import { Z_INDEX_CONTENT, Z_INDEX_LINK } from 'src/styles/variables'
 import { Content } from 'src/utils/getContent'
@@ -14,6 +12,7 @@ import Icon from 'src/components/UI/Icon'
 import IconButton from 'src/components/UI/IconButton'
 import DiffHistory from 'src/components/content/DiffHistory'
 import DiffContent from 'src/components/content/DiffContent'
+import Box from 'src/components/UI/Box'
 
 type Props = {
   content: Content
@@ -95,7 +94,7 @@ const Component: React.FC<Props> = props => {
           zIndex={Z_INDEX_CONTENT}
         >
           <DialogTitle id="dialog-title" fontSize="1rem">
-            <TitleInner>
+            <Box display="flex" alignItems="center">
               <IconButton
                 color="inherit"
                 aria-label="back"
@@ -104,11 +103,13 @@ const Component: React.FC<Props> = props => {
               >
                 <Icon name="faChevronLeft" />
               </IconButton>
-              <Title>{props.content.title}</Title>
-            </TitleInner>
+              <Box lineHeight={1} mb={2}>
+                {props.content.title}
+              </Box>
+            </Box>
           </DialogTitle>
           <DialogContent dividers>
-            <DialogContentInner>
+            <Box display="flex">
               <DiffHistory
                 onUpdateDiffName={props.onUpdateDiffName}
                 groupedDiffsByDate={props.groupedDiffsByDate}
@@ -116,7 +117,7 @@ const Component: React.FC<Props> = props => {
                 onClickViewHistory={handleClickViewHistory}
               />
               <DiffContent currentContent={props.content} oldDiff={oldDiff} />
-            </DialogContentInner>
+            </Box>
           </DialogContent>
 
           <DialogActions>
@@ -136,19 +137,5 @@ const Component: React.FC<Props> = props => {
     </>
   )
 }
-
-const Title = styledSystem(styled.div`
-  line-height: 1;
-  margin-bottom: 2px;
-`)
-
-const TitleInner = styledSystem(styled.div`
-  display: flex;
-  align-items: center;
-`)
-
-const DialogContentInner = styledSystem(styled.div`
-  display: flex;
-`)
 
 export default memo<Props>(Component)
