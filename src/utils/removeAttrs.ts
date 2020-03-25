@@ -1,7 +1,12 @@
 const ATTRIBUTES_BLACK_LIST = ['src']
 const SUBTITLE_CLASS_NAME = 'graf--subtitle'
 const TITLE_CLASS_NAME = 'graf--title'
-const INHERITED_CLASS_LIST = [SUBTITLE_CLASS_NAME, TITLE_CLASS_NAME]
+const EXTERNAL_LINK_CLASS_NAME = 'graf--mixtapeEmbed'
+const INHERITED_CLASS_LIST = [
+  SUBTITLE_CLASS_NAME,
+  TITLE_CLASS_NAME,
+  EXTERNAL_LINK_CLASS_NAME,
+]
 
 const removeAttrs = (node: HTMLElement) => {
   if (!node.tagName) return
