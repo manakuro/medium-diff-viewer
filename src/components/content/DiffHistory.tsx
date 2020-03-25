@@ -87,6 +87,7 @@ const DiffHistory: React.FC<Props> = props => {
                             onBlur={(e: ChangeEvent<HTMLInputElement>) =>
                               handleBlur(e, d.id)
                             }
+                            width="80%"
                           />
                         }
                         secondary={
