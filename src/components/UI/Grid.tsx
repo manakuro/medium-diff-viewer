@@ -1,8 +1,5 @@
-// @see https://material-ui.com/components/grid/
-
 import React from 'react'
 import MaterialUiGrid, { GridProps } from '@material-ui/core/Grid'
-import theme from 'src/styles/theme'
 import styled, { css } from 'styled-components'
 import styledSystem, { StyledSystemProps } from 'src/utils/styledSystem'
 
@@ -14,7 +11,7 @@ type Props = {
   StyledSystemProps
 
 const Grid: React.FC<Props> = props => {
-  const spacing = props.container ? { spacing: theme.main.grid.spacing } : {}
+  const spacing = props.container ? { spacing: 3 } : {}
 
   return (
     <StyledGrid {...spacing} {...props}>

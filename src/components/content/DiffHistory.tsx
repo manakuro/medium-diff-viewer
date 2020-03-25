@@ -1,7 +1,5 @@
 import React, { memo, ChangeEvent, useCallback } from 'react'
-import styledSystem from 'src/utils/styledSystem'
 import styled from 'styled-components'
-import theme from 'src/styles/theme'
 import { ContainerTypes } from 'src/components/content/Container'
 import { tableHeaderColour } from 'src/styles/variables'
 import { Diff, GroupedDiffsByDate } from 'src/hooks/useDiffs'
@@ -13,6 +11,7 @@ import { formatDiffHistoryDate, formatGroupedDate } from 'src/utils/formatDate'
 import Textarea from 'src/components/UI/Textarea'
 import Box from 'src/components/UI/Box'
 import Text from 'src/components/UI/Text'
+import Heading from 'src/components/UI/Heading'
 
 type Props = {
   onUpdateDiffName: ContainerTypes['handleUpdateDiffName']
@@ -39,7 +38,9 @@ const DiffHistory: React.FC<Props> = props => {
   return (
     <Box width="15%" p={12}>
       <Sticky>
-        <SectionTitle>Diff History</SectionTitle>
+        <Heading as="h3" mb={24} fontWeight="heading" fontSize="md">
+          Diff History
+        </Heading>
         <Box width="100%" height={600} overflowY="scroll">
           {Object.keys(groupedDiffsByDate).map(k => {
             const diffs = groupedDiffsByDate[k]
@@ -110,12 +111,6 @@ const DiffHistory: React.FC<Props> = props => {
     </Box>
   )
 }
-
-const SectionTitle = styledSystem(styled.h3`
-  font-size: 1rem;
-  font-weight: ${theme.fontWeights.heading};
-  margin-bottom: 24px;
-`)
 
 const Sticky = styled(Box)`
   position: sticky;

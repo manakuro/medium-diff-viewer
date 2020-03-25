@@ -1,5 +1,4 @@
 import {
-  backgroundColour,
   black,
   grey,
   lightBlue,
@@ -9,37 +8,26 @@ import {
   textSubColour,
   white,
 } from 'src/styles/variables'
-import { GridProps } from '@material-ui/core/Grid'
 
 const theme = {
-  main: {
-    width: '1120px',
-    font: 'Roboto',
-    headingFont: 'Roboto',
-    background: backgroundColour,
-    colour: textColour,
-    subColour: textSubColour,
-    grid: {
-      spacing: 3,
-    } as GridProps,
-  },
   space: [],
 
   colors: {
     primary: `${primaryColour} !important`,
     secondary: '',
+    lightGrey: `${lightGrey} !important`,
+    grey: `${grey} !important`,
+    white: `${white} !important`,
+    black: `${black} !important`,
+    lightBlue: `${lightBlue} !important`,
+
+    // text colour
     text: {
       primary: textColour,
       secondary: textSubColour,
       disabled: '',
       hint: '',
     },
-
-    lightGrey: `${lightGrey} !important`,
-    grey: `${grey} !important`,
-    white: `${white} !important`,
-    black: `${black} !important`,
-    lightBlue: `${lightBlue} !important`,
   },
 
   // Breakpoints based on Material Design

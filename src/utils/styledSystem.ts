@@ -48,6 +48,7 @@ export type StyledSystemProps = SpaceProps &
   MinHeightProps & {
     as?: keyof JSX.IntrinsicElements | React.ComponentType<any>
     forwardedAs?: keyof JSX.IntrinsicElements | React.ComponentType<any>
+    variant?: string
   }
 
 const styledSystem = (tag: Tag) => {
