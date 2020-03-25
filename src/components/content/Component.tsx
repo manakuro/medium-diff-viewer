@@ -53,7 +53,7 @@ const Component: React.FC<Props> = props => {
     setOpen(false)
   }, [])
 
-  const handleViewDiff = useCallback(() => {
+  const handleClickViewDiff = useCallback(() => {
     setCurrentContent()
     setOpen(true)
   }, [setCurrentContent])
@@ -78,7 +78,7 @@ const Component: React.FC<Props> = props => {
         variant="outlined"
         size="small"
         disabled={disabledViewDiffButton}
-        onClick={handleViewDiff}
+        onClick={handleClickViewDiff}
       >
         {props.loading ? 'Saving...' : 'View diff'}
       </Button>
