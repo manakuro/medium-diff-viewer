@@ -1,16 +1,13 @@
-# Chrome Extension (built with TypeScript + React)
+# Medium Diff Viewer
+A simple and clean diff viewer for Medium stories implemented by [@manakuro](https://medium.com/@manakuro).
 
-> This project is a boilerplate project to allow you to quickly build chrome extensions using TypeScript and React.
+You can get this at Chrome Web Store!
 
-## Building
 
-1.  Clone repo
-2.  `npm i`
-3.  `npm run dev` to compile once or `npm run watch` to run the dev task in watch mode
-4.  `npm run build` to build a production (minified) version
+## Features
 
-## Installation
+- Compare current editing story with the previous version
+- Automatically detect the change and save it
+- View the revision history
+- Add the title of the revision history
 
-1.  Complete the steps to build the project above
-2.  Go to [_chrome://extensions_](chrome://extensions) in Google Chrome
-3.  With the developer mode checkbox ticked, click **Load unpacked extension...** and select the _dist_ folder from this repo
