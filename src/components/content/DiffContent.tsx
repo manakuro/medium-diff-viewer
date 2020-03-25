@@ -60,6 +60,7 @@ const SectionTitle = styledSystem(styled.h3<{ show: boolean }>`
 const Inner = styledSystem(styled.div`
   ${mediumStyle}
 
+  // diff viewer style
   tr {
     td:nth-of-type(2),
     td:nth-of-type(5) {

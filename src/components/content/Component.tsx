@@ -38,7 +38,7 @@ const initialDiff: Diff = {
 }
 
 const Component: React.FC<Props> = props => {
-  const { setCurrentContent, loading } = props
+  const { setCurrentContent } = props
   const [open, setOpen] = useState(false)
   const hasDiff = props.diffs.length
   const disabledViewDiffButton = !hasDiff
@@ -80,7 +80,7 @@ const Component: React.FC<Props> = props => {
         disabled={disabledViewDiffButton}
         onClick={handleViewDiff}
       >
-        {loading ? 'Saving...' : 'View diff'}
+        {props.loading ? 'Saving...' : 'View diff'}
       </Button>
       {hasDiff && (
         <Dialog

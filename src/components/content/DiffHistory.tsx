@@ -20,7 +20,12 @@ type Props = {
 }
 
 const DiffHistory: React.FC<Props> = props => {
-  const { oldDiff, onUpdateDiffName } = props
+  const {
+    oldDiff,
+    onUpdateDiffName,
+    groupedDiffsByDate,
+    onClickViewHistory,
+  } = props
 
   const handleBlur = useCallback(
     (e: ChangeEvent<HTMLInputElement>, id: number) => {
@@ -34,8 +39,8 @@ const DiffHistory: React.FC<Props> = props => {
       <Sticky>
         <SectionTitle>Diff History</SectionTitle>
         <DiffHistoryWrapper>
-          {Object.keys(props.groupedDiffsByDate).map(k => {
-            const diffs = props.groupedDiffsByDate[k]
+          {Object.keys(groupedDiffsByDate).map(k => {
+            const diffs = groupedDiffsByDate[k]
             const groupedDate = formatGroupedDate(k)
 
             return (
@@ -62,7 +67,7 @@ const DiffHistory: React.FC<Props> = props => {
                       divider
                       alignItems="flex-start"
                       selected={selected}
-                      onClick={() => props.onClickViewHistory(d.id)}
+                      onClick={() => onClickViewHistory(d.id)}
                       key={d.id}
                       pt={'10px !important' as any}
                       pb={'10px !important' as any}
@@ -110,16 +115,16 @@ const SectionTitle = styledSystem(styled.h3<{ show: boolean }>`
   margin-bottom: 24px;
 `)
 
-const Sticky = styled.div`
+const Sticky = styledSystem(styled.div`
   position: sticky;
   top: 0;
-`
+`)
 
-const DiffHistoryWrapper = styled.div`
+const DiffHistoryWrapper = styledSystem(styled.div`
   width: 100%;
   height: 600px;
   overflow-y: scroll;
-`
+`)
 
 const DiffHistoryDate = styledSystem(styled.span`
   padding-left: 7px;

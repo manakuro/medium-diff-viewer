@@ -13,7 +13,7 @@ export type ContainerTypes = {
   handleUpdateDiffName: (value: string, id: number) => void
 }
 
-const Container: React.FC<Props> = props => {
+const Container: React.FC<Props> = () => {
   const [content, setContent] = useState<Content>({
     title: '',
     body: '',
