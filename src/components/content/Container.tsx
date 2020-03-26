@@ -35,14 +35,14 @@ const Container: React.FC<Props> = () => {
   }, [])
 
   const handleUpdateDiffName = useCallback(
-    (value: string, id: number) => {
+    async (value: string, id: number) => {
       const diff = findDiff(id)
       if (!diff) return
       if (diff.name === value) return
 
       diff.name = value
 
-      updateDiff(diff)
+      await updateDiff(diff)
     },
     [findDiff, updateDiff],
   )

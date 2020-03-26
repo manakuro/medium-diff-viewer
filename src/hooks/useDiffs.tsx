@@ -105,9 +105,7 @@ export const useDiffs = () => {
   }, [diffs])
 
   const groupDiffByDate = useCallback((val: Diffs): GroupedDiffsByDate => {
-    return groupBy(val, diff => {
-      return format(new Date(diff.date), 'yyyy-MM-dd')
-    })
+    return groupBy(val, diff => format(new Date(diff.date), 'yyyy-MM-dd'))
   }, [])
 
   const shouldUpdateDiff = useCallback(() => {
@@ -120,17 +118,21 @@ export const useDiffs = () => {
     return diffLength >= 3
   }, [diffs])
 
+  const initialize = useCallback(async () => {
+    const storedDiffs = await fetchDiffs()
+    if (!storedDiffs.length) {
+      await addDiff()
+      return
+    }
+
+    setDiffs(storedDiffs)
+  }, [addDiff, fetchDiffs])
+
   useEffect(() => {
     ;(async () => {
-      const storedDiffs = await fetchDiffs()
-      if (!storedDiffs.length) {
-        await addDiff()
-        return
-      }
-
-      setDiffs(storedDiffs)
+      await initialize()
     })()
-  }, [addDiff, fetchDiffs])
+  }, [initialize])
 
   return {
     diffs: memoizedDiffs,

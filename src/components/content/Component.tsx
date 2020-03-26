@@ -45,10 +45,6 @@ const Component: React.FC<Props> = props => {
   const latestDiff = hasDiff ? props.diffs[0] : initialDiff
   const [oldDiff, setOldDiff] = useState<Diff>(latestDiff)
 
-  useEffect(() => {
-    if (latestDiff.id !== initialDiff.id) setOldDiff(latestDiff)
-  }, [latestDiff])
-
   const handleClose = useCallback(() => {
     setOpen(false)
   }, [])
@@ -66,6 +62,16 @@ const Component: React.FC<Props> = props => {
     },
     [oldDiff.id, props.diffs, setOldDiff],
   )
+
+  // When fetching diffs from database, update old diff
+  useEffect(() => {
+    if (latestDiff.id !== initialDiff.id) setOldDiff(latestDiff)
+  }, [latestDiff])
+
+  // When deleting last diff, close the dialog
+  useEffect(() => {
+    if (!hasDiff && open) setOpen(false)
+  }, [hasDiff, open])
 
   return (
     <>
