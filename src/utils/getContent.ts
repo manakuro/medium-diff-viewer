@@ -35,6 +35,8 @@ const getContent = () => {
       return `${acc}\n${node.outerHTML}`
     }, ''),
   )
+
+  result.body = result.body.replace(/(<br>|<br \/>)/g, '')
   result.title = normalizeHtmlWhiteSpace(heading.innerText)
 
   return result

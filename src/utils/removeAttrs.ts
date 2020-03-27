@@ -1,4 +1,8 @@
-import { inheritClass, inheritImgSrc } from 'src/utils/inheritAttrs'
+import {
+  inheritBackgroundImageUrl,
+  inheritClass,
+  inheritImgSrc,
+} from 'src/utils/inheritAttrs'
 
 const removeAttrs = (node: HTMLElement) => {
   if (!node.tagName) return
@@ -13,7 +17,10 @@ const removeAttrs = (node: HTMLElement) => {
 
   if (node.attributes.length) {
     ;[...(node.attributes as any)].forEach(attr => {
-      if (node.style.backgroundImage && attr.name === 'style') return
+      if (node.style.backgroundImage && attr.name === 'style') {
+        inheritBackgroundImageUrl(node.style.backgroundImage, node)
+        return
+      }
       if (attr.name === 'src') {
         inheritImgSrc(attr.value, node)
         return

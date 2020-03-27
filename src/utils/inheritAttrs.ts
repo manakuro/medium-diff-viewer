@@ -22,3 +22,13 @@ export const inheritImgSrc = (src: string, node: HTMLElement) => {
     ),
   )
 }
+
+export const inheritBackgroundImageUrl = (
+  backgroundImage: string,
+  node: HTMLElement,
+) => {
+  node.style.backgroundImage = backgroundImage.replace(
+    /https:\/\/cdn-images-1\.medium.com\/fit\/c\/.*\/.*\//g,
+    'https://cdn-images-1.medium.com/fit/c/320/320/',
+  )
+}
