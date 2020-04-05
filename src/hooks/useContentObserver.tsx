@@ -26,7 +26,7 @@ const useContentObserver = (props: Props) => {
         attributes: false,
         childList: true,
       })
-    })
+    }, 3000)
     return () => {
       if (observer) observer.disconnect()
       clearTimeout(timer)
