@@ -77,7 +77,7 @@
     "react-indexed-db": "git+https://github.com/manakuro/react-indexed-db.git",
     "react-rnd": "^10.1.4",
     "react-sticky": "^6.0.3",
-    "sanitize-html": "^1.21.1",
+    "sanitize-html": "^2.3.2",
     "styled-components": "^5.0.0",
     "styled-system": "^5.1.4"
   },
