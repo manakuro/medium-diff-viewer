@@ -43,7 +43,7 @@
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "1.x",
     "lint-staged": "^10.0.2",
-    "node-sass": "^4.7.2",
+    "node-sass": "^7.0.0",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.3",
